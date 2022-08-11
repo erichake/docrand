@@ -3,7 +3,6 @@ import { div } from "./div.js";
 import { header } from "./header.js";
 import { footer } from "./footer.js";
 import { content } from "./content.js";
-import * as LEVELS from "../levels.js";
 import { LClass } from "../level.js";
 import { MOBILE_KEYBOARD } from "../../ressources/simple-keyboard/mobile_keyboard.js";
 
@@ -214,8 +213,6 @@ export class stage extends div {
     this.current_level = _n;
 
     this.makeSnapshot();
-
-    let dump = LEVELS;
 
     this.QUE = this.getQUE(_n - 1);
 

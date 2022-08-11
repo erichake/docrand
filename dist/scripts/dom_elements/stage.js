@@ -3,7 +3,6 @@ import { div } from "./div.js";
 import { header } from "./header.js";
 import { footer } from "./footer.js";
 import { content } from "./content.js";
-import * as LEVELS from "../levels.js";
 import { MOBILE_KEYBOARD } from "../../ressources/simple-keyboard/mobile_keyboard.js";
 export class stage extends div {
     // DOM_R: DOMElement;
@@ -152,7 +151,6 @@ export class stage extends div {
             _n = this.current_level;
         this.current_level = _n;
         this.makeSnapshot();
-        let dump = LEVELS;
         this.QUE = this.getQUE(_n - 1);
         this.is_valid_step = true;
         this.$c.setLevel(this.QUE);
