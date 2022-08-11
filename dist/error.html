@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0 ,user-scalable=no"
+    />
+    <link rel="stylesheet" href="./styles/error.css" />
+    <title>Titre de la page</title>
+  </head>
+  <body>
+    <div class="ttle">Erreur de paramètre dans l'URL</div>
+    <div class="mess">
+      <script>
+        const mess = location.href.split("?")[1];
+        let text;
+        switch (mess) {
+          case "noURL":
+            text = `Vous n'avez pas fourni de paramètre "url" dans votre adresse.`;
+            break;
+          case "wrongURL":
+            text = `Le paramètre "url" fourni ne désigne aucun fichier partagé.`;
+            break;
+          case "wrongFILE":
+            text = `Le paramètre "url" fourni correspond bien à un fichier partagé, mais celui-ci n'a pas la bonne structure.`;
+            break;
+        }
+        text += ` L'adresse qui permettra d'accéder à votre jeu est du type :`;
+        document.write(text);
+        let u =
+          top.location.href.split(`/error.html?`)[0] +
+          `/index.php?url=&lt;lien&gt;`;
+        document.write(`<div class="link">${u}</div>`);
+      </script>
+    </div>
+    <div class="expl">
+      "&lt;lien&gt;" est l'adresse d'un fichier partagé en mode "accessible à
+      tous les possesseurs du lien" sur un des clouds suivants :
+    </div>
+    <ul class="cloud">
+      <li>
+        NextCloud (<a target="_blank" href="https://portail.apps.education.fr"
+          >adoptée par l'Education Nationale</a
+        >)
+      </li>
+      <li>Google Drive</li>
+      <li>Dropbox</li>
+      <li>OneDrive</li>
+    </ul>
+    <div class="expl">
+      <b>Note aux utilisateurs de Google Drive</b> : le fichier ciblé est de
+      type javascript, mais sur ce cloud vous devez éviter de choisir
+      l'extension ".js" pour le nom de votre fichier. Choisissez plutôt
+      l'extension ".txt". Pour les trois autres clouds, l'extension ".js" ne
+      pose aucun problème particulier.
+    </div>
+  </body>
+</html>

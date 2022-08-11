@@ -1,0 +1,106 @@
+import { $, DOMElement } from "../dom_design.js";
+import { div } from "./div.js";
+import { LClass } from "../level.js";
+
+export class content extends div {
+  private callback: () => void;
+  private Qdiv: DOMElement;
+  private ANS: DOMElement;
+  private FAIL: DOMElement;
+  private WIN: DOMElement;
+  private COM_FAIL: DOMElement;
+  private COM_WIN: DOMElement;
+  constructor() {
+    super();
+    let prefs = window.$SETTINGS;
+    const s = prefs.stage;
+    const h = prefs.header;
+    const f = prefs.footer;
+    const c = prefs.content;
+    this.stl(
+      `position:relative;width:${s.width}px;min-height:${c.min_height}px;background-color:${c.background};user-select:none;-webkit-user-select:none;`
+    );
+    this.Qdiv = $.div().stl(
+      `position:relative;padding:10px;padding-top:20px;padding-bottom:20px;bottom:${c.question.bottom}px;color:${c.question.color};font-size:${c.question.fontsize}px;font-family:sans-serif`
+    );
+    this.dom()
+      .add(
+        (this.FAIL = $.div().stl(
+          `width:100%;text-align:center;color:${c.you_fail.color};font-family:sans-serif;overflow:hidden;line-height:0;font-size:0px;padding-top:0px;padding-bottom:0px;background:${c.you_fail.background};height:0px`
+        ))
+          .add(
+            $.div()
+              .stl(`font-weight:bold;font-size:120%`)
+              .inner(c.you_fail.text1)
+          )
+          .add(
+            $.div()
+              .stl(`font-size:100%`)
+              .add($.span().inner(c.you_fail.text2))
+              .add((this.ANS = $.span()))
+          )
+          .add(
+            $.div()
+              .stl(
+                `font-size:80%;text-align:justify;padding-left:10px;padding-right:10px;padding-top:10px;color:${c.comment.color}`
+              )
+              .add($.span().inner(""))
+              .add((this.COM_FAIL = $.span()))
+          )
+      )
+      .add(
+        (this.WIN = $.div()
+          .stl(
+            `width:100%;text-align:center;color:${c.you_win.color};font-family:sans-serif;overflow:hidden;line-height:0;font-size:0px;font-weight:bold;padding-top:0px;padding-bottom:0px;background:${c.you_win.background};height:0px`
+          )
+          .inner(c.you_win.text)).add(
+          $.div()
+            .stl(
+              `font-weight:normal;font-size:60%;text-align:justify;padding-left:10px;padding-right:10px;padding-top:10px;color:${c.comment.color}`
+            )
+            .add($.span().inner(""))
+            .add((this.COM_WIN = $.span()))
+        )
+      )
+      .add(this.Qdiv);
+  }
+  hide_messages() {
+    this.FAIL.stl(
+      `height:0px;transition:unset;line-height:0;font-size:0px;padding-top:0px;padding-bottom:0px`
+    );
+    this.WIN.stl(
+      `height:0px;transition:unset;line-height:0;font-size:0px;padding-top:0px;padding-bottom:0px`
+    );
+  }
+  show_youfail(o: LClass) {
+    const c = window.$SETTINGS.content;
+    this.ANS.inner($.TeX(this.dec(o.tex_answer()) + this.dec(o.suffix())));
+    this.FAIL.stl(
+      `height:unset;transition: all ${c.you_fail.transition_time}s;line-height:1;font-size:${c.you_fail.fontsize}px;padding-top:20px;padding-bottom:20px`
+    );
+  }
+  show_youwin() {
+    const c = window.$SETTINGS.content;
+    this.WIN.stl(
+      `height:unset;transition: all ${c.you_win.transition_time}s;line-height:1;font-size:${c.you_win.fontsize}px;padding-top:20px;padding-bottom:20px`
+    );
+  }
+  setLevel(o: LClass) {
+    let q = this.dec(o.question());
+    const c = window.$SETTINGS.content;
+    this.hide_messages();
+    if (q === "") {
+      this.Qdiv.stl(
+        `position:relative;padding:0px;padding-top:0px;padding-bottom:0px;bottom:0px;color:#FFF;font-size:0px`
+      );
+    } else {
+      this.Qdiv.stl(
+        `position:relative;padding:10px;padding-top:20px;padding-bottom:20px;bottom:${c.question.bottom}px;color:${c.question.color};font-size:${c.question.fontsize}px;font-family:sans-serif`
+      );
+    }
+    this.Qdiv.inner($.TeX(q));
+    this.COM_FAIL.inner(o.comment());
+    this.COM_WIN.inner(o.comment());
+    this.stl(`min-height:${q === "" ? 0 : c.min_height}px`);
+  }
+}

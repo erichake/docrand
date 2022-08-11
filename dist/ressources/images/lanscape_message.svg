@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1023 798" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(-0.0041,-0.0165104,-0.0239064,0.00593664,510.618,210.493)">
+        <path d="M287,12789C181,12764 86,12685 36,12580C8,12522 5,12505 5,12425C5,12344 9,12328 38,12268C84,12173 147,12120 295,12052C520,11948 1044,11681 1245,11569C2690,10763 3770,9821 4522,8710C5313,7544 5710,6170 5651,4808C5637,4487 5602,4145 5564,3967L5558,3940L4516,3940C3852,3940 3453,3936 3419,3930C3293,3906 3183,3816 3139,3698C3093,3574 3115,3426 3195,3332C3214,3310 3661,2932 4187,2493C4713,2054 5583,1328 6121,878C6660,429 7120,52 7144,40C7248,-10 7371,-9 7478,41C7515,59 7881,419 9154,1689C10049,2583 10801,3341 10825,3372C10963,3556 10899,3820 10692,3922L10625,3955L9598,3958C8830,3960 8570,3963 8570,3972C8570,3978 8579,4069 8590,4174C8643,4691 8645,5299 8594,5825C8398,7864 7489,9565 5950,10766C4782,11679 3266,12307 1420,12644C1143,12694 927,12729 700,12760C615,12771 515,12785 478,12790C399,12802 339,12801 287,12789Z" style="fill:white;fill-rule:nonzero;"/>
+    </g>
+    <g transform="matrix(6.12323e-17,-1,1,6.12323e-17,-930.5,1951.5)">
+        <g transform="matrix(1,0,0,1.13844,592,435.256)">
+            <rect x="574" y="446" width="435" height="679" style="fill:none;stroke:rgb(119,119,119);stroke-width:23.33px;"/>
+        </g>
+        <rect x="1169" y="1636" width="428" height="79" style="fill:rgb(119,119,119);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,-590.5,-930.5)">
+        <g transform="matrix(1,0,0,1.13844,592,435.256)">
+            <rect x="574" y="446" width="435" height="679" style="fill:none;stroke:white;stroke-width:23.33px;"/>
+        </g>
+        <rect x="1169" y="1636" width="428" height="79" style="fill:white;"/>
+    </g>
+</svg>

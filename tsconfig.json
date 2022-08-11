@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2020",
+    "outDir": "dist/",
+    "baseUrl": ".",
+    "noImplicitAny": true,
+    "sourceMap": false
+  }
+}

@@ -1,0 +1,47 @@
+body {
+  margin: 0px;
+}
+
+/*
+  Theme: numeric
+*/
+.numeric-theme {
+  position: fixed;
+  bottom: 0px;
+  width: 650px;
+  border-radius: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  /* margin: 0 auto; */
+  font-size: 36px;
+  z-index: 1000;
+  /* font-weight: bold; */
+  /* left: 50%; */
+  /* transform: translate(-50%, 0); */
+}
+
+.numeric-theme + .simple-keyboard-preview {
+  max-width: none;
+}
+
+.simple-keyboard.hg-theme-default.numeric-theme
+  .hg-button.hg-standardBtn.hg-button-at {
+  max-width: none;
+}
+
+.hg-theme-default .hg-button {
+  box-shadow: 0 0 3px -1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  box-sizing: border-box;
+  /* max-height: 45px; */
+  padding: 0px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  background: #fff;
+  border-bottom: 1px solid #b5b5b5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}

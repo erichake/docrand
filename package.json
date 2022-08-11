@@ -1,0 +1,15 @@
+{
+  "name": "exemple",
+  "version": "1.0.0",
+  "description": "Exemple de projet Typescript",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && cp -R ressources dist && cp -R styles dist && cp index.html dist/index.html && cp error.html dist/error.html && cp index.php dist/index.php && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Hakenholz",
+  "license": "MIT",
+  "dependencies": {
+    "@types/katex": "^0.14.0"
+  }
+}
