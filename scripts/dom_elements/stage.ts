@@ -243,6 +243,7 @@ export class stage extends div {
           `<img src="./ressources/images/chrono.png" style="max-width:120px;float:right;padding-left:10px"/>Ce niveau de jeu est chronométré. Tu as ${this.QUE.CHRONO} secondes pour répondre à chacune des ${this.QUE.NB} questions de ce niveau.<br><br>Clique sur le bouton ci-dessous pour commencer :`
         );
         $(`#chrono_start_cache`).show();
+        this.KBD.hide();
       }
     }
     setTimeout(this.swipeLeft.bind(this), 1);
@@ -301,14 +302,6 @@ export class stage extends div {
 
   private countdown() {
     let $COUNTDOWN_START = 3;
-    // let $COUNTDOWN_SIZE =
-    //   (Math.min(
-    //     $(`#content_footer_wrapper`).width(),
-    //     $(`#content_footer_wrapper`).height()
-    //   ) -
-    //     80) /
-    //   this.scale;
-
     let $COUNTDOWN_SIZE =
       this.QUE.question() === ""
         ? 220
@@ -348,6 +341,7 @@ export class stage extends div {
         }
       } else {
         // ON QUITTE LE COUNTDOWN :
+        this.KBD.show();
         clearInterval($INTERVAL);
         $("#countdown_back").remove();
         $("#countdown_circle").remove();

@@ -30,7 +30,9 @@ export class MOBILE_KEYBOARD {
         return "ontouchstart" in window;
     }
     show() {
-        this.dom.show();
+        if (this.isMobileDevice()) {
+            this.dom.show();
+        }
     }
     hide() {
         this.dom.hide();
