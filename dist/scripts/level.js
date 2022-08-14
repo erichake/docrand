@@ -45,6 +45,18 @@ export class LClass {
     comment() {
         return "";
     }
+    setNB(_n) {
+        this.NB = _n;
+    }
+    getNB() {
+        return this.NB;
+    }
+    setCHRONO(_t) {
+        this.CHRONO = _t;
+    }
+    getCHRONO() {
+        return this.CHRONO;
+    }
     tex_answer() {
         let tex;
         let a = this.answer();

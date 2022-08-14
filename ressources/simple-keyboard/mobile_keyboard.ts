@@ -45,7 +45,9 @@ export class MOBILE_KEYBOARD {
     }
   }
   hide() {
-    this.dom.hide();
+    if (this.isMobileDevice()) {
+      this.dom.hide();
+    }
   }
   setWidth(_w: number) {
     if (this.isMobileDevice()) {

@@ -23,24 +23,13 @@ const RepTypes = [
 ] as const;
 export type RepType = typeof RepTypes[number];
 
-export interface LInterface {
-  NB: number;
-  CHRONO: number;
-  type(): RepType;
-  question(): string;
-  prefix(): string;
-  suffix(): string;
-  answer(): any[];
-  comment(): string;
-}
-
-export class LClass implements LInterface {
+export class LClass {
   // Liste des inputs :
   private inputs: DOMElement[] = [];
   // Nombre de questions par niveau :
-  NB: number = 10;
+  private NB: number = 10;
   // Nombre de secondes par question :
-  CHRONO: number = 0;
+  private CHRONO: number = 0;
   constructor() {}
   type(): RepType {
     return "int";
@@ -59,6 +48,18 @@ export class LClass implements LInterface {
   }
   comment(): string {
     return "";
+  }
+  setNB(_n: number) {
+    this.NB = _n;
+  }
+  getNB() {
+    return this.NB;
+  }
+  setCHRONO(_t: number) {
+    this.CHRONO = _t;
+  }
+  getCHRONO() {
+    return this.CHRONO;
   }
   tex_answer() {
     let tex;
