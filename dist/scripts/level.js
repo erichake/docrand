@@ -148,3 +148,6 @@ export const RD = function (x, y) {
     }
     return Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
 };
+export const CUT = function (x) {
+    return Math.round(parseFloat("" + x) * Math.pow(10, 8)) / Math.pow(10, 8);
+};
