@@ -154,3 +154,7 @@ export const RD = function (x?: number, y?: number): number {
   }
   return Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
 };
+
+export const CUT = function (x: number | string): number {
+  return Math.round(parseFloat("" + x) * Math.pow(10, 8)) / Math.pow(10, 8);
+};
