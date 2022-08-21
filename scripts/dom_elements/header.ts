@@ -249,7 +249,7 @@ export class header extends div {
   public setLevel(QUE: LClass) {
     const s = window.$SETTINGS.stage;
     const h = window.$SETTINGS.header;
-    const n = QUE.NB;
+    const n = QUE.getNB();
     this.nbQuestions.inner("" + n);
     this.score.inner("0");
     const w =
