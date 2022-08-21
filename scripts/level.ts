@@ -92,7 +92,8 @@ export class LClass {
         tex = `$$${a[0]}\\times10^{${a[1]}}$$`;
         break;
       case "puiss":
-        tex = `$$${a[0]}^{${a[1]}}$$`;
+        let nb = a[0] < 0 ? `(${a[0]})` : a[0];
+        tex = `$$${nb}^{${a[1]}}$$`;
         break;
       case "puiss10":
         tex = `$$10^{${a[0]}}$$`;

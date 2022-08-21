@@ -88,7 +88,8 @@ export class LClass {
                 tex = `$$${a[0]}\\times10^{${a[1]}}$$`;
                 break;
             case "puiss":
-                tex = `$$${a[0]}^{${a[1]}}$$`;
+                let nb = a[0] < 0 ? `(${a[0]})` : a[0];
+                tex = `$$${nb}^{${a[1]}}$$`;
                 break;
             case "puiss10":
                 tex = `$$10^{${a[0]}}$$`;
@@ -148,6 +149,7 @@ export const RD = function (x, y) {
     }
     return Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
 };
-export const CUT = function (x) {
-    return Math.round(parseFloat("" + x) * Math.pow(10, 8)) / Math.pow(10, 8);
+export const CUT = function (x, n) {
+    let exp = typeof n === "undefined" ? 8 : parseFloat("" + n);
+    return Math.round(parseFloat("" + x) * Math.pow(10, exp)) / Math.pow(10, exp);
 };

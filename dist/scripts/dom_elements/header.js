@@ -153,7 +153,7 @@ export class header extends div {
     setLevel(QUE) {
         const s = window.$SETTINGS.stage;
         const h = window.$SETTINGS.header;
-        const n = QUE.NB;
+        const n = QUE.getNB();
         this.nbQuestions.inner("" + n);
         this.score.inner("0");
         const w = Math.min(h.height - 8, (s.width -
