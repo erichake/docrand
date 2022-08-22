@@ -146,14 +146,29 @@ export class LClass {
   }
 }
 
-export const RD = function (x?: number, y?: number): number {
-  if (typeof y === "undefined") {
-    if (typeof x === "undefined") {
-      return Math.random();
+export const RD = function (x?: number, y?: number, ex?: number[]): number {
+  if (typeof ex === "undefined") {
+    if (typeof y === "undefined") {
+      if (typeof x === "undefined") {
+        // RD() => Aléatoire dans [0,1[
+        return Math.random();
+      }
+      // RD(a) => Aléatoire entier dans [0,a]
+      return RD(0, x, []);
     }
-    return RD(0, x);
+    if (typeof y === "object") {
+      // RD(a,[e1,e2,...]) => Aléatoire entier dans [0,a] sauf e1,e2,...
+      return RD(0, x, y);
+    }
+    // RD(a,b) => Aléatoire entier dans [a,b]
+    return RD(x, y, []);
   }
-  return Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
+  // RD(a,b,[e1,e2,...]) => Aléatoire entier dans [a,b] sauf e1,e2,...
+  let k;
+  do {
+    k = Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
+  } while (ex.indexOf(k) !== -1);
+  return k;
 };
 
 export const CUT = function (x: number | string, n?: number | string): number {
