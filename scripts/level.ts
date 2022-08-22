@@ -175,3 +175,11 @@ export const CUT = function (x: number | string, n?: number | string): number {
   let exp = typeof n === "undefined" ? 8 : parseFloat("" + n);
   return Math.round(parseFloat("" + x) * 10 ** exp) / 10 ** exp;
 };
+
+export const GCD = function (a: number, b: number): number {
+  if (b) {
+    return GCD(b, a % b);
+  } else {
+    return Math.abs(a);
+  }
+};

@@ -157,6 +157,7 @@ export const RD = function (x, y, ex) {
         // RD(a,b) => Aléatoire entier dans [a,b]
         return RD(x, y, []);
     }
+    // RD(a,b,[e1,e2,...]) => Aléatoire entier dans [a,b] sauf e1,e2,...
     let k;
     do {
         k = Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));
