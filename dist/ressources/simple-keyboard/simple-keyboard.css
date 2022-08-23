@@ -42,11 +42,11 @@
   display: flex;
 }
 .hg-theme-default .hg-row:not(:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 .hg-theme-default .hg-row .hg-button-container,
 .hg-theme-default .hg-row .hg-button:not(:last-child) {
-  margin-right: 5px;
+  margin-right: 8px;
 }
 .hg-theme-default .hg-row > div:last-child {
   margin-right: 0;
@@ -73,7 +73,7 @@
 }
 .hg-theme-default.hg-layout-numeric .hg-button {
   width: 33.3%;
-  height: 60px;
+  height: 70px;
   align-items: center;
   display: flex;
   justify-content: center;

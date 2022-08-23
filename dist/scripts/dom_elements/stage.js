@@ -172,8 +172,8 @@ export class stage extends div {
             $("#chrono_countdown").hide();
             $("#chrono_start_cache").hide();
             this.$h.setLevel(this.QUE);
-            if (this.QUE.CHRONO > 0) {
-                $(`#chrono_start_txt`).inner(`<img src="./ressources/images/chrono.png" style="max-width:120px;float:right;padding-left:10px"/>Ce niveau de jeu est chronométré. Tu as ${this.QUE.CHRONO} secondes pour répondre à chacune des ${this.QUE.NB} questions de ce niveau.<br><br>Clique sur le bouton ci-dessous pour commencer :`);
+            if (this.QUE.getCHRONO() > 0) {
+                $(`#chrono_start_txt`).inner(`<img src="./ressources/images/chrono.png" style="max-width:120px;float:right;padding-left:10px"/>Ce niveau de jeu est chronométré. Tu as ${this.QUE.getCHRONO()} secondes pour répondre à chacune des ${this.QUE.getNB()} questions de ce niveau.<br><br>Clique sur le bouton ci-dessous pour commencer :`);
                 $(`#chrono_start_cache`).show();
                 this.KBD.hide();
             }
@@ -191,7 +191,7 @@ export class stage extends div {
         this.is_valid_step = !this.is_valid_step;
         if (this.is_valid_step) {
             // On a cliqué sur "Suite"
-            if (this.QUE.CHRONO > 0) {
+            if (this.QUE.getCHRONO() > 0) {
                 this.start_progress_bar();
             }
             if (this.$h.no_more_dots())
@@ -211,7 +211,7 @@ export class stage extends div {
             if (this.$h.mark_dot(chk)) {
                 this.endLevel();
             }
-            if (this.QUE.CHRONO > 0)
+            if (this.QUE.getCHRONO() > 0)
                 this.interval = setInterval(this.valid.bind(this), 1500);
         }
     }
@@ -221,7 +221,7 @@ export class stage extends div {
     }
     progress_bar() {
         let d = Date.now();
-        let pc = (0.1 * (d - this.time)) / this.QUE.CHRONO;
+        let pc = (0.1 * (d - this.time)) / this.QUE.getCHRONO();
         $("#chrono_progress_bar").stl(`width:${pc}%`);
         if (pc > 100)
             this.valid();
@@ -310,7 +310,7 @@ export class stage extends div {
             .inner(p.dialog.text1))
             .add($.div()
             .stl(`position:absolute;left:0px;top:60px;width:100%;text-align:center;font-size:${p.dialog.fontsize2}px;color:${p.dialog.color2}`)
-            .inner(`${p.dialog.text2}${this.$h.get_score()} / ${this.QUE.NB}`))
+            .inner(`${p.dialog.text2}${this.$h.get_score()} / ${this.QUE.getNB()}`))
             .add($.create("a")
             .att(`id:dom_design_dialog_btn`)
             .stl(`position:absolute;width:80px;height:30px;right:10px;bottom:10px;line-height:30px;border-radius:5px;border:0;cursor:pointer;font-size:16px;text-align:center;background:#8cd4f5;color:white;font-weight:bold`)

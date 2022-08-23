@@ -46,8 +46,10 @@ export class footer extends div {
     let suf = $.div()
       .inner($.TeX(s))
       .stl("display:table-cell;vertical-align:middle");
-    const int_kbd = ["- 1 2 3 4 5 {bksp}", " 6 7 8 9 0 {enter}"];
-    const dec_kbd = ["- 1 2 3 4 5 {bksp}", ", 6 7 8 9 0 {enter}"];
+    // const int_kbd = ["- 1 2 3 4 5 {bksp}", " 6 7 8 9 0 {enter}"];
+    // const dec_kbd = ["- 1 2 3 4 5 {bksp}", ", 6 7 8 9 0 {enter}"];
+    const int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9  {enter}"];
+    const dec_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 , {enter}"];
     const exp_kbd = [
       "+ * / x y ( )",
       "- 1 2 3 4 5 {bksp}",
