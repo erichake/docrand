@@ -19,13 +19,12 @@ body {
   /* font-weight: bold; */
   /* left: 50%; */
   /* transform: translate(-50%, 0); */
-  background: hsla(0, 100%, 50%, 0);
+  background: #607d8b;
 }
 
 .numeric-theme + .simple-keyboard-preview {
   max-width: none;
 }
-
 .simple-keyboard.hg-theme-default.numeric-theme
   .hg-button.hg-standardBtn.hg-button-at {
   max-width: none;

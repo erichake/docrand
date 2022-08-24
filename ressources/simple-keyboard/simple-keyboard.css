@@ -71,9 +71,10 @@
 .hg-theme-default .hg-button.hg-activeButton {
   background: #efefef;
 }
+
 .hg-theme-default.hg-layout-numeric .hg-button {
   width: 33.3%;
-  height: 70px;
+  height: 80px;
   align-items: center;
   display: flex;
   justify-content: center;
