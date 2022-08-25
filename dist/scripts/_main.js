@@ -20,10 +20,12 @@ export class main {
                         $.getKaTeX(function () {
                             const path = location.href.split("/index.php?")[0];
                             window.$PLUGIN =
-                                `import {LClass,RD,CUT,GCD} from "${path}/scripts/level.js";` +
+                                `import {LClass,RD,CUT,GCD,SVG} from "${path}/scripts/level.js";` +
                                     window.$PLUGIN;
                             const enc_plugin = encodeURIComponent(window.$PLUGIN);
                             const dataUri = "data:text/javascript;charset=utf-8," + enc_plugin;
+                            // const dataUri =
+                            //   "data:text/javascript;base64," + btoa(window.$PLUGIN);
                             // console.log(window.$PLUGIN);
                             let aa = import(dataUri)
                                 .then((obj) => {

@@ -5,7 +5,7 @@ DocRand is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 You should have received a copy of the GNU General Public License along with DocRand. If not, see <https://www.gnu.org/licenses/>.
 **************************************/
 
-import { DOMElement } from "./dom_design";
+import { $, DOMElement } from "./dom_design.js";
 
 const RepTypes = [
   // "exp" en chantier :
@@ -182,4 +182,17 @@ export const GCD = function (a: number, b: number): number {
   } else {
     return Math.abs(a);
   }
+};
+
+export const SVG = function (svg: string, stl?: string) {
+  // tout convertir en utf8 :
+  var txt = document.createElement("textarea");
+  txt.innerHTML = svg;
+  // les non-ascii en html-entities :
+  svg = txt.value
+    .split("")
+    .map((a) => (a.charCodeAt(0) > 127 ? `&#${a.charCodeAt(0)};` : a))
+    .join("");
+  let s = typeof stl === "undefined" ? "" : ` style="${stl}"`;
+  return `<div${s}><img src="data:image/svg+xml;base64,${btoa(svg)}"/></div>`;
 };

@@ -176,3 +176,13 @@ export const GCD = function (a, b) {
         return Math.abs(a);
     }
 };
+export const SVG = function (svg, stl) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = svg;
+    svg = txt.value
+        .split("")
+        .map((a) => (a.charCodeAt(0) > 127 ? `&#${a.charCodeAt(0)};` : a))
+        .join("");
+    let s = typeof stl === "undefined" ? "" : ` style="${stl}"`;
+    return `<div${s}><img src="data:image/svg+xml;base64,${btoa(svg)}"/></div>`;
+};
