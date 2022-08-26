@@ -194,5 +194,5 @@ export const SVG = function (svg: string, stl?: string) {
     .map((a) => (a.charCodeAt(0) > 127 ? `&#${a.charCodeAt(0)};` : a))
     .join("");
   let s = typeof stl === "undefined" ? "" : ` style="${stl}"`;
-  return `<div${s}><img src="data:image/svg+xml;base64,${btoa(svg)}"/></div>`;
+  return `<img${s} src="data:image/svg+xml;base64,${btoa(svg)}"/>`;
 };
