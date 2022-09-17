@@ -103,7 +103,7 @@ export class LClass {
     }
     check() {
         let eq = function (m, n) {
-            return Math.abs(m - n) < 1e-13;
+            return Math.abs(m - n) < 1e-8;
         };
         let t = this.inputs.map((x) => x.dom().value);
         let ok;
@@ -126,6 +126,9 @@ export class LClass {
             case "dec":
             case "int":
                 ok = this.answer().every((a, i) => {
+                    // console.log("teach = " + a);
+                    // console.log("studt = " + parseFloat(t[i].trim().replace(",", ".")));
+                    // console.log("************************");
                     return eq(a, parseFloat(t[i].trim().replace(",", ".")));
                 });
                 break;

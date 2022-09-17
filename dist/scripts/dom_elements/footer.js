@@ -156,13 +156,38 @@ export class footer extends div {
                     .add(inp2)
                     .add($.div().stl(`display:block;height:50px`));
                 o.addinput(inp1).addinput(inp2);
-                this.dom()
-                    .inner("")
-                    .add(wrp
-                    .add(pre.stl(`vertical-align:middle`))
-                    .add(inp1wrp)
-                    .add(inp2wrp)
-                    .add(suf.stl(`vertical-align:middle`)));
+                this.dom().inner("");
+                if (o.answer()[0] < 0) {
+                    let par1 = $.div()
+                        .stl(`display:table-cell;vertical-align:middle;margin-left:5px;margin-right:5px`)
+                        .inner($.TeX(`$$($$`));
+                    let par2 = $.div()
+                        .stl(`display:table-cell;vertical-align:middle;margin-left:5px;margin-right:5px`)
+                        .inner($.TeX(`$$)$$`));
+                    this.dom().add(wrp
+                        .add(pre.stl(`vertical-align:middle`))
+                        .add(par1)
+                        .add(inp1wrp)
+                        .add(par2)
+                        .add(inp2wrp)
+                        .add(suf.stl(`vertical-align:middle`)));
+                }
+                else {
+                    this.dom().add(wrp
+                        .add(pre.stl(`vertical-align:middle`))
+                        .add(inp1wrp)
+                        .add(inp2wrp)
+                        .add(suf.stl(`vertical-align:middle`)));
+                }
+                // this.dom()
+                //   .inner("")
+                //   .add(
+                //     wrp
+                //       .add(pre.stl(`vertical-align:middle`))
+                //       .add(inp1wrp)
+                //       .add(inp2wrp)
+                //       .add(suf.stl(`vertical-align:middle`))
+                //   );
                 inp1.dom().focus();
                 break;
             case "sci":

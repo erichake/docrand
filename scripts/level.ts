@@ -107,7 +107,7 @@ export class LClass {
   }
   check(): boolean {
     let eq = function (m: number, n: number): boolean {
-      return Math.abs(m - n) < 1e-13;
+      return Math.abs(m - n) < 1e-8;
     };
     let t: string[] = this.inputs.map((x) => (<HTMLInputElement>x.dom()).value);
     let ok: boolean;
@@ -131,6 +131,9 @@ export class LClass {
       case "dec":
       case "int":
         ok = this.answer().every((a, i) => {
+          // console.log("teach = " + a);
+          // console.log("studt = " + parseFloat(t[i].trim().replace(",", ".")));
+          // console.log("************************");
           return eq(a, parseFloat(t[i].trim().replace(",", ".")));
         });
         break;
