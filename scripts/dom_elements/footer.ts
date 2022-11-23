@@ -50,12 +50,13 @@ export class footer extends div {
     // const dec_kbd = ["- 1 2 3 4 5 {bksp}", ", 6 7 8 9 0 {enter}"];
     const int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9  {enter}"];
     const dec_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 , {enter}"];
+    const lst_int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 ; {enter}"];
     const exp_kbd = [
       "+ * / x y ( )",
       "- 1 2 3 4 5 {bksp}",
       ", 6 7 8 9 0 {enter}",
     ];
-    let inp, inp1, inp2, inp3, inp1wrp, inp2wrp, ten, h, min, sec;
+    let inp, inp1, inp2, inp3, inp1wrp, inp2wrp, ten, h, min, sec, sep, div;
     switch (o.type()) {
       case "exp":
         inp = INP(exp_kbd)
@@ -65,6 +66,23 @@ export class footer extends div {
           );
         o.addinput(inp);
         this.dom().inner("").add(wrp.add(pre).add(inp).add(suf));
+        (inp.dom() as HTMLInputElement).focus();
+        break;
+      case "lst_int":
+        let com = $.div()
+          .stl(
+            `display:table-row;font-size:14px;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:3px;width:90%`
+          )
+          .inner(
+            `Réponse sous forme d'une liste de nombres entiers séparés par des points-virgules :`
+          );
+        inp = INP(lst_int_kbd).stl(
+          `display:table-row;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:10px;width:90%`
+        );
+        o.addinput(inp);
+        this.dom()
+          .inner("")
+          .add(wrp.stl(`width:100%;text-align:center`).add(com).add(inp));
         (inp.dom() as HTMLInputElement).focus();
         break;
       case "int":
@@ -266,6 +284,36 @@ export class footer extends div {
           .add(wrp.add(pre).add(inp1wrp).add(ten).add(inp2wrp).add(suf));
         (inp1.dom() as HTMLInputElement).focus();
         break;
+      case "mixed":
+        inp2 = INP(int_kbd).stl(
+          `display:block;margin-bottom:8px;font-size:24px;width:50px;`
+        );
+        inp3 = INP(int_kbd).stl(
+          `display:block;margin-top:8px;font-size:24px;width:50px;`
+        );
+        sep = $.div().stl(
+          `display:block;width:65px;height:3px;background:white;margin: 0 auto;`
+        );
+        div = $.div()
+          .stl(
+            `display:table-cell;width:50px;text-align:center;padding-left:10px;padding-right:10px`
+          )
+          .add(inp2)
+          .add(sep)
+          .add(inp3);
+
+        inp1 = INP(int_kbd).stl(
+          `display:block;width:60px;font-size:48px;height:70px`
+        );
+        let div2 = $.div()
+          .stl(
+            `display:table-cell;width:60px;text-align:center;vertical-align:middle`
+          )
+          .add(inp1);
+        o.addinput(inp1).addinput(inp2).addinput(inp3);
+        this.dom().inner("").add(wrp.add(pre).add(div2).add(div).add(suf));
+        (inp1.dom() as HTMLInputElement).focus();
+        break;
       case "frac":
       case "frac-simp":
         inp1 = INP(int_kbd).stl(
@@ -274,10 +322,10 @@ export class footer extends div {
         inp2 = INP(int_kbd).stl(
           `display:block;margin-top:8px;font-size:24px;width:90px;`
         );
-        let sep = $.div().stl(
+        sep = $.div().stl(
           `display:block;width:110px;height:3px;background:white;margin: 0 auto;`
         );
-        let div = $.div()
+        div = $.div()
           .stl(
             `display:table-cell;width:100px;text-align:center;padding-left:10px;padding-right:10px`
           )

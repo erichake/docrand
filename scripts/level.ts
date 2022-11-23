@@ -10,8 +10,10 @@ import { $, DOMElement } from "./dom_design.js";
 const RepTypes = [
   // "exp" en chantier :
   "exp",
+  "lst_int",
   "int",
   "dec",
+  "mixed",
   "frac",
   "frac-simp",
   "sci",
@@ -64,8 +66,17 @@ export class LClass {
   tex_answer() {
     let tex;
     let a = this.answer();
-    if (this.type() === "exp") {
-      return `$$${a[0]}$$`;
+    // if (this.type() === "exp") {
+    //   return `$$${a[0]}$$`;
+    // }
+    // if (this.type() === "lst_int") {
+    //   return `$$${a[0]}$$`;
+    // }
+    switch (this.type()) {
+      case "lst_int":
+      case "exp":
+        return `<br>$$${a[0]}$$`;
+        break;
     }
     for (let i = 0; i < a.length; i++) {
       a[i] = Math.round(a[i] * 1e8) / 1e8;
@@ -83,6 +94,9 @@ export class LClass {
         break;
       case "h-min-s":
         tex = `$$${a[0]}h${a[1]}min${a[2]}s$$`;
+        break;
+      case "mixed":
+        tex = `$$${a[0]}\\dfrac{${a[1]}}{${a[2]}}$$`;
         break;
       case "frac-simp":
       case "frac":
@@ -111,15 +125,26 @@ export class LClass {
     };
     let t: string[] = this.inputs.map((x) => (<HTMLInputElement>x.dom()).value);
     let ok: boolean;
-
+    let stud, teach;
     switch (this.type()) {
       case "exp":
         // en chantier...
-        let stud = t[0].replace(/\s/g, "");
+        stud = t[0].replace(/\s/g, "");
         ok = false;
         for (let i = 0; i < this.answer().length; i++) {
           ok = ok || stud === this.answer()[i];
         }
+        break;
+      case "lst_int":
+        //student:
+        stud = t[0].split(";").map((a: string) => parseInt(a));
+        stud.sort((a: number, b: number) => a - b);
+        //teacher:
+        teach = this.answer()[0]
+          .split(";")
+          .map((a: string) => parseInt(a));
+        teach.sort((a: number, b: number) => a - b);
+        ok = stud.join(";") === teach.join(";");
         break;
       case "min-s":
       case "h-min":
@@ -127,6 +152,7 @@ export class LClass {
       case "puiss10":
       case "puiss":
       case "sci":
+      case "mixed":
       case "frac-simp":
       case "dec":
       case "int":
