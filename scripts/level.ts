@@ -137,7 +137,9 @@ export class LClass {
         break;
       case "lst_int":
         //student:
-        stud = t[0].split(";").map((a: string) => parseInt(a));
+        let str = t[0].trim();
+        if (str.slice(-1) === ";") str = str.slice(0, -1);
+        stud = str.split(";").map((a: string) => parseInt(a));
         stud.sort((a: number, b: number) => a - b);
         //teacher:
         teach = this.answer()[0]
