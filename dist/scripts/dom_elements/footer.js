@@ -60,7 +60,7 @@ export class footer extends div {
                         .stl(`display:table-cell;margin-left:5px;margin-right:5px;width:150px`);
                     o.addinput(inp);
                     wrp.add(pre).add(inp).add(suf);
-                    inp.dom().focus();
+                    // (inp.dom() as HTMLInputElement).focus();
                     break;
                 case "lst_int":
                     let com = $.div()
@@ -69,7 +69,6 @@ export class footer extends div {
                     inp = INP(lst_int_kbd).stl(`display:table-row;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:10px;width:90%`);
                     o.addinput(inp);
                     wrp.stl(`width:100%;text-align:center`).add(com).add(inp);
-                    inp.dom().focus();
                     break;
                 case "int":
                 case "dec":
@@ -93,7 +92,6 @@ export class footer extends div {
                     // });
                     o.addinput(inp);
                     wrp.add(pre).add(pack(inp)).add(suf);
-                    inp.dom().focus();
                     break;
                 case "min-s":
                     inp1 = INP(int_kbd);
@@ -108,7 +106,6 @@ export class footer extends div {
                     c1 = pack(inp1.stl("width:60px"));
                     c2 = pack(inp2.stl("width:60px"));
                     wrp.add(pre).add(c1).add(min).add(c2).add(sec).add(suf);
-                    inp1.dom().focus();
                     break;
                 case "h-min":
                     inp1 = INP(int_kbd);
@@ -123,7 +120,6 @@ export class footer extends div {
                     c1 = pack(inp1.stl("width:60px"));
                     c2 = pack(inp2.stl("width:60px"));
                     wrp.add(pre).add(c1).add(h).add(c2).add(min).add(suf);
-                    inp1.dom().focus();
                     break;
                 case "h-min-s":
                     inp1 = INP(int_kbd);
@@ -151,7 +147,6 @@ export class footer extends div {
                         .add(c3)
                         .add(sec)
                         .add(suf);
-                    inp1.dom().focus();
                     break;
                 case "puiss10":
                     ten = $.div()
@@ -164,7 +159,6 @@ export class footer extends div {
                         .add($.div().stl(`display:block;height:50px`));
                     o.addinput(inp2);
                     wrp.add(pre).add(ten).add(inp2wrp).add(suf);
-                    inp2.dom().focus();
                     break;
                 case "puiss":
                     inp1 = INP(dec_kbd).stl(`display:block;margin-left:5px;margin-right:5px;margin-bottom:5px;width:60px`);
@@ -201,7 +195,6 @@ export class footer extends div {
                             .add(inp2wrp)
                             .add(suf.stl(`vertical-align:middle`));
                     }
-                    inp1.dom().focus();
                     break;
                 case "sci":
                     inp1 = INP(dec_kbd).stl(`display:block;margin-bottom:5px`);
@@ -218,7 +211,6 @@ export class footer extends div {
                         .inner($.TeX(`$$\\times10$$`));
                     o.addinput(inp1).addinput(inp2);
                     wrp.add(pre).add(inp1wrp).add(ten).add(inp2wrp).add(suf);
-                    inp1.dom().focus();
                     break;
                 case "mixed":
                     inp2 = INP(int_kbd).stl(`display:block;margin-bottom:8px;font-size:24px;width:50px;`);
@@ -235,7 +227,6 @@ export class footer extends div {
                         .add(inp1);
                     o.addinput(inp1).addinput(inp2).addinput(inp3);
                     wrp.add(pre).add(div2).add(div).add(suf);
-                    inp1.dom().focus();
                     break;
                 case "frac":
                 case "frac-simp":
@@ -249,9 +240,11 @@ export class footer extends div {
                         .add(inp2);
                     o.addinput(inp1).addinput(inp2);
                     wrp.add(pre).add(div).add(suf);
-                    inp1.dom().focus();
                     break;
             }
         }
+        const allINPS = wrp.dom().getElementsByTagName("input");
+        if (allINPS.length > 0)
+            allINPS[0].focus();
     }
 }
