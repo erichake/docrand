@@ -43,7 +43,7 @@ export class content extends div {
     }
     show_youfail(o) {
         const c = window.$SETTINGS.content;
-        this.ANS.inner($.TeX(this.dec(o.tex_answer()) + this.dec(o.suffix())));
+        this.ANS.inner($.TeX(o.tex_answer()));
         this.FAIL.stl(`height:unset;transition: all ${c.you_fail.transition_time}s;line-height:1;font-size:${c.you_fail.fontsize}px;padding-top:20px;padding-bottom:20px`);
     }
     show_youwin() {

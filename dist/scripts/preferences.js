@@ -85,7 +85,7 @@ export const $PREFS = {
             fontsize: 28,
             top: 10,
             text1: "Faux !",
-            text2: "La réponse attendue était : ",
+            text2: "La ligne réponse attendue était : ",
             transition_time: 0.2,
         },
         you_win: {

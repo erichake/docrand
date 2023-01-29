@@ -48,6 +48,9 @@ export class LClass {
   answer(): any[] {
     return [];
   }
+  footer(): string[] {
+    return [this.prefix(), this.type(), this.suffix()];
+  }
   comment(): string {
     return "";
   }
@@ -64,56 +67,58 @@ export class LClass {
     return this.CHRONO;
   }
   tex_answer() {
-    let tex;
+    let tex = [];
     let a = this.answer();
-    // if (this.type() === "exp") {
-    //   return `$$${a[0]}$$`;
-    // }
-    // if (this.type() === "lst_int") {
-    //   return `$$${a[0]}$$`;
-    // }
-    switch (this.type()) {
-      case "lst_int":
-      case "exp":
-        return `<br>$$${a[0]}$$`;
-        break;
+    let m = 0;
+    const T = () => CUT(a[m++]);
+    let foot = this.footer();
+    for (let rank = 1; rank < foot.length; rank += 2) {
+      let tpe = foot[rank];
+      switch (tpe) {
+        case "lst_int":
+          tex.push(`$$${a[m++]}$$`);
+          break;
+        case "dec":
+        case "int":
+          tex.push(`$$${T()}$$`);
+          break;
+        case "min-s":
+          tex.push(`$$${T()}min${T()}s$$`);
+          break;
+        case "h-min":
+          tex.push(`$$${T()}h${T()}min$$`);
+          break;
+        case "h-min-s":
+          tex.push(`$$${T()}h${T()}min${T()}s$$`);
+          break;
+        case "mixed":
+          tex.push(`$$${T()}\\dfrac{${T()}}{${T()}}$$`);
+          break;
+        case "frac-simp":
+        case "frac":
+          tex.push(`$$\\dfrac{${T()}}{${T()}}$$`);
+          break;
+        case "sci":
+          tex.push(`$$${T()}\\times10^{${T()}}$$`);
+          break;
+        case "puiss":
+          let nb = a[m] < 0 ? `(${T()})` : T();
+          tex.push(`$$${nb}^{${T()}}$$`);
+          break;
+        case "puiss10":
+          tex.push(`$$10^{${T()}}$$`);
+          break;
+      }
     }
-    for (let i = 0; i < a.length; i++) {
-      a[i] = Math.round(a[i] * 1e8) / 1e8;
+    let str = `<div style="margin-top:10px;padding:10px;color:#777">${foot[0]}`;
+    for (let k = 0; k < tex.length; k++) {
+      str += `<div style="display:inline-block;padding:10px;border-radius:3px;border: 2px solid black;margin-left:8px;margin-right:8px;border-color:#660000;color:#660000;background-color:white">${tex[
+        k
+      ].replace(/(-*\d+)\.(\d*)/g, `$1,$2`)}</div>`;
+      str += foot[2 * k + 2];
     }
-    switch (this.type()) {
-      case "dec":
-      case "int":
-        tex = `$$${a[0]}$$`;
-        break;
-      case "min-s":
-        tex = `$$${a[0]}min${a[1]}s$$`;
-        break;
-      case "h-min":
-        tex = `$$${a[0]}h${a[1]}min$$`;
-        break;
-      case "h-min-s":
-        tex = `$$${a[0]}h${a[1]}min${a[2]}s$$`;
-        break;
-      case "mixed":
-        tex = `$$${a[0]}\\dfrac{${a[1]}}{${a[2]}}$$`;
-        break;
-      case "frac-simp":
-      case "frac":
-        tex = `$$\\dfrac{${a[0]}}{${a[1]}}$$`;
-        break;
-      case "sci":
-        tex = `$$${a[0]}\\times10^{${a[1]}}$$`;
-        break;
-      case "puiss":
-        let nb = a[0] < 0 ? `(${a[0]})` : a[0];
-        tex = `$$${nb}^{${a[1]}}$$`;
-        break;
-      case "puiss10":
-        tex = `$$10^{${a[0]}}$$`;
-        break;
-    }
-    return tex;
+    str += `</div>`;
+    return str;
   }
   addinput(inp: DOMElement) {
     this.inputs.push(inp);
