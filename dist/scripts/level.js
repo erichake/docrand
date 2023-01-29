@@ -204,6 +204,10 @@ export const CUT = function (x, n) {
     let exp = typeof n === "undefined" ? 8 : parseFloat("" + n);
     return Math.round(parseFloat("" + x) * Math.pow(10, exp)) / Math.pow(10, exp);
 };
+export const DEC = function (t) {
+    t = "" + t;
+    return t.replace(/(-*\d+)\.(\d*)/g, `$1,$2`);
+};
 export const GCD = function (a, b) {
     if (b) {
         return GCD(b, a % b);

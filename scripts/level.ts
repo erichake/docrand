@@ -212,6 +212,11 @@ export const CUT = function (x: number | string, n?: number | string): number {
   return Math.round(parseFloat("" + x) * 10 ** exp) / 10 ** exp;
 };
 
+export const DEC = function (t: number | string): string {
+  t = "" + t;
+  return t.replace(/(-*\d+)\.(\d*)/g, `$1,$2`);
+};
+
 export const GCD = function (a: number, b: number): number {
   if (b) {
     return GCD(b, a % b);
