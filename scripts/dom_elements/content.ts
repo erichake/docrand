@@ -93,7 +93,9 @@ export class content extends div {
     );
   }
   setLevel(o: LClass) {
-    let q = this.dec(o.question());
+    // Remplacement du point décimal par une virgule, sauf pour
+    // tout ce qui est à l'intérieur de balises html :
+    let q = o.question().replace(/(\d+)\.(\d*)(?![^<]*>)/g, "$1,$2");
     const c = window.$SETTINGS.content;
     this.hide_messages();
     if (q === "") {

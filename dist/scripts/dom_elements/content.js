@@ -51,7 +51,9 @@ export class content extends div {
         this.WIN.stl(`height:unset;transition: all ${c.you_win.transition_time}s;line-height:1;font-size:${c.you_win.fontsize}px;padding-top:20px;padding-bottom:20px`);
     }
     setLevel(o) {
-        let q = this.dec(o.question());
+        // Remplacement du point décimal par une virgule, sauf pour
+        // tout ce qui est à l'intérieur de balises html :
+        let q = o.question().replace(/(\d+)\.(\d*)(?![^<]*>)/g, "$1,$2");
         const c = window.$SETTINGS.content;
         this.hide_messages();
         if (q === "") {

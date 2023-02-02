@@ -228,3 +228,23 @@ export const SVG = function (svg, stl) {
     let s = typeof stl === "undefined" ? "" : ` style="${stl}"`;
     return `<img${s} src="data:image/svg+xml;base64,${btoa(svg)}"/>`;
 };
+export const DGPad = function (param) {
+    let obj = typeof param === "undefined" ? {} : param;
+    let fig = obj.figure
+        ? obj.figure
+        : `SetCoords(400,285.5,40,false,411,308);SetCoordsStyle("isAxis:false;isGrid:true;isOx:true;isOy:true;isLockOx:false;isLockOy:false;centerZoom:false;onlyPositive:false;color:#111111;fontSize:18;axisWidth:1;gridWidth:0.1");SetGeneralStyle("background-color:#F8F8F8;degree:true;dragmoveable:true");`;
+    let scale = obj.scale ? obj.scale : 1;
+    let hide_ctrl_panel = obj.hide_ctrl_panel ? obj.hide_ctrl_panel : true;
+    let interactive = obj.interactive ? obj.interactive : false;
+    let w = 0;
+    let h = 0;
+    fig.replace(/SetCoords\([^\)]*,\s*(\d*)\s*,\s*(\d*)\s*\)/g, function (m, a, b) {
+        w = parseInt(a);
+        h = parseInt(b);
+        return "";
+    });
+    const d = Date.now();
+    scale = (scale * (window.$SETTINGS.stage.width - 20)) / w;
+    const src = `<div style="pointer-events: ${interactive ? "auto" : "none"};margin:0 auto;width:${scale * w}px;height:${scale * h}px;overflow:hidden;border:2px solid #3a92c8"><form action="https://dgpad.net/index.php" target="dgpad_frame_${d}" method="post" style="transform-origin:left top;transform:scale(${scale})"><input type="hidden" name="file_content" value="${btoa(fig)}"><input type="hidden" name="hide_ctrlpanel" value="${hide_ctrl_panel ? "true" : "false"}"><input type="hidden" name="show_tools" value="true"><iframe id="doceval_iframe"  name="dgpad_frame_${d}" style="width:${w}px;height:${h}px;" src="about:blank" scrolling="no" frameborder="no" oNlOAd="if (!this.parentNode.num) {this.parentNode.submit();this.parentNode.num=true}"></iframe></form></div>`;
+    return src;
+};

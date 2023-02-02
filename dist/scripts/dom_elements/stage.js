@@ -137,6 +137,7 @@ export class stage extends div {
     resize() {
         this.landscape_message();
         const s = window.$SETTINGS.stage;
+        // const dw = window.innerWidth;
         const dw = document.body.clientWidth;
         const ww = Math.min(dw, 900);
         this.scale = ww / s.width;
