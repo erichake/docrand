@@ -32,7 +32,20 @@ export class LClass {
   private NB: number = 10;
   // Nombre de secondes par question :
   private CHRONO: number = 0;
-  constructor() {}
+  constructor(o?: LClass) {
+    if (o) this.clone(o);
+  }
+  clone(o: LClass) {
+    this.type = () => o.type();
+    this.question = () => o.question();
+    this.prefix = () => o.prefix();
+    this.suffix = () => o.suffix();
+    this.answer = () => o.answer();
+    this.comment = () => o.comment();
+    this.footer = () => o.footer();
+    this.check = o.check;
+    this.tex_answer = o.tex_answer;
+  }
   type(): RepType {
     return "int";
   }
@@ -48,9 +61,7 @@ export class LClass {
   answer(): any[] {
     return [];
   }
-  footer(): string[] {
-    return [this.prefix(), this.type(), this.suffix()];
-  }
+
   comment(): string {
     return "";
   }
@@ -66,7 +77,73 @@ export class LClass {
   getCHRONO() {
     return this.CHRONO;
   }
-  tex_answer() {
+
+  addinput(inp: DOMElement) {
+    this.inputs.push(inp);
+    return this;
+  }
+  footer(): string[] {
+    return [this.prefix(), this.type(), this.suffix()];
+  }
+  check(): boolean {
+    let eq = function (m: number, n: number): boolean {
+      return Math.abs(m - n) < 1e-8;
+    };
+    let t: string[] = this.inputs.map(
+      (x: any) => (<HTMLInputElement>x.dom()).value
+    );
+    let ok: boolean;
+    let stud, teach;
+    switch (this.type()) {
+      case "exp":
+        // en chantier...
+        stud = t[0].replace(/\s/g, "");
+        ok = false;
+        for (let i = 0; i < this.answer().length; i++) {
+          ok = ok || stud === this.answer()[i];
+        }
+        break;
+      case "lst_int":
+        //student:
+        let str = t[0].trim();
+        if (str.slice(-1) === ";") str = str.slice(0, -1);
+        stud = str.split(";").map((a: string) => parseInt(a));
+        stud.sort((a: number, b: number) => a - b);
+        //teacher:
+        teach = this.answer()[0]
+          .split(";")
+          .map((a: string) => parseInt(a));
+        teach.sort((a: number, b: number) => a - b);
+        ok = stud.join(";") === teach.join(";");
+        break;
+      case "min-s":
+      case "h-min":
+      case "h-min-s":
+      case "puiss10":
+      case "puiss":
+      case "sci":
+      case "mixed":
+      case "frac-simp":
+      case "dec":
+      case "int":
+        ok = this.answer().every((a: any, i: any) => {
+          // console.log("teach = " + a);
+          // console.log("studt = " + parseFloat(t[i].trim().replace(",", ".")));
+          // console.log("************************");
+          return eq(a, parseFloat(t[i].trim().replace(",", ".")));
+        });
+        break;
+      case "frac":
+        let a = parseFloat(t[0].trim().replace(",", "."));
+        let b = parseFloat(t[1].trim().replace(",", "."));
+        let c = this.answer()[0];
+        let d = this.answer()[1];
+        ok = eq(a * d, b * c);
+        break;
+    }
+    return ok;
+  }
+  tex_answer(): string {
     let tex = [];
     let a = this.answer();
     let m = 0;
@@ -119,66 +196,6 @@ export class LClass {
     }
     str += `</div>`;
     return str;
-  }
-  addinput(inp: DOMElement) {
-    this.inputs.push(inp);
-    return this;
-  }
-  check(): boolean {
-    let eq = function (m: number, n: number): boolean {
-      return Math.abs(m - n) < 1e-8;
-    };
-    let t: string[] = this.inputs.map((x) => (<HTMLInputElement>x.dom()).value);
-    let ok: boolean;
-    let stud, teach;
-    switch (this.type()) {
-      case "exp":
-        // en chantier...
-        stud = t[0].replace(/\s/g, "");
-        ok = false;
-        for (let i = 0; i < this.answer().length; i++) {
-          ok = ok || stud === this.answer()[i];
-        }
-        break;
-      case "lst_int":
-        //student:
-        let str = t[0].trim();
-        if (str.slice(-1) === ";") str = str.slice(0, -1);
-        stud = str.split(";").map((a: string) => parseInt(a));
-        stud.sort((a: number, b: number) => a - b);
-        //teacher:
-        teach = this.answer()[0]
-          .split(";")
-          .map((a: string) => parseInt(a));
-        teach.sort((a: number, b: number) => a - b);
-        ok = stud.join(";") === teach.join(";");
-        break;
-      case "min-s":
-      case "h-min":
-      case "h-min-s":
-      case "puiss10":
-      case "puiss":
-      case "sci":
-      case "mixed":
-      case "frac-simp":
-      case "dec":
-      case "int":
-        ok = this.answer().every((a, i) => {
-          // console.log("teach = " + a);
-          // console.log("studt = " + parseFloat(t[i].trim().replace(",", ".")));
-          // console.log("************************");
-          return eq(a, parseFloat(t[i].trim().replace(",", ".")));
-        });
-        break;
-      case "frac":
-        let a = parseFloat(t[0].trim().replace(",", "."));
-        let b = parseFloat(t[1].trim().replace(",", "."));
-        let c = this.answer()[0];
-        let d = this.answer()[1];
-        ok = eq(a * d, b * c);
-        break;
-    }
-    return ok;
   }
 }
 
@@ -238,14 +255,87 @@ export const SVG = function (svg: string, stl?: string) {
   return `<img${s} src="data:image/svg+xml;base64,${btoa(svg)}"/>`;
 };
 
-export const DGPad = function (param?: any) {
-  let obj = typeof param === "undefined" ? {} : param;
-  let fig = obj.figure
-    ? obj.figure
+// Renvoie le source HTML d'une figure DGPad
+export const DGPad = function (obj: LClass, figure?: string, param?: any) {
+  let P = typeof param === "undefined" ? {} : param;
+  let scale = P.scale ? P.scale : 1;
+  let hide_ctrl_panel = P.hide_ctrl_panel ? P.hide_ctrl_panel : true;
+  let target = P.target ? P.target : null;
+  let interactive = P.interactive ? P.interactive : target ? true : false;
+  // Si on est en mode "target", il n'y a pas de réponse
+  // numérique attentue : l'élève doit déplacer un ou plusieurs
+  // objets de la figure. "target" représente le nom du point
+  // ou de l'expression de cette figure dont la valeur doit être
+  // égale à la réponse prof (this.answer()).
+  if (target) {
+    obj.footer = () => {
+      return [];
+    };
+    obj.tex_answer = () => {
+      $("#dgpad_frame_mask").stl("pointer-events:none");
+      let frm = $("#doceval_iframe").dom() as any;
+      let cnv = frm.contentWindow.$CANVAS;
+      let src_student = cnv.getSource();
+      let cst = cnv.getConstruction();
+      let ans = obj.answer();
+      if (ans.length === 1) ans = ans[0];
+      let T = cst.findVar(target);
+      let teacher = JSON.stringify(obj.answer());
+      T.setExp(teacher);
+      cst.computeAll();
+      let src_teacher = cnv.getSource();
+
+      // En rouge, tous les objets de
+      // la figure de correction :
+      src_teacher = src_teacher.replace(
+        /"c:(#[0-9a-fA-F]{6});/gm,
+        '"c:#c82f25;'
+      );
+
+      // En gris, tous les objets de
+      // la figure de l'élève :
+      src_student = src_student.replace(
+        /"c:(#[0-9a-fA-F]{6});/gm,
+        '"c:#888888;'
+      );
+
+      // On nettoie la figure, et y on injecte
+      // les deux sources (élève et prof) :
+      cst.deleteAll();
+      cnv.macrosManager.clearTools();
+      cnv.textManager.clear();
+      cnv.trackManager.clear();
+      cnv.Interpret(src_teacher);
+      cnv.Interpret(src_student);
+      cst.initAll();
+      cst.computeAll();
+      cnv.textManager.refreshInputs();
+      cnv.paint();
+      return "";
+    };
+    obj.check = () => {
+      const eq = function (m: number, n: number): boolean {
+        return Math.abs(m - n) < 1e-8;
+      };
+      let frm = $("#doceval_iframe").dom() as any;
+      let teacher = obj.answer();
+      let student = frm.contentWindow.$CANVAS
+        .getConstruction()
+        .findVar(target)
+        .getValue();
+
+      let ok = true;
+      for (let i = 0; i < teacher.length; i++) {
+        ok = ok && eq(teacher[i], student[i]);
+      }
+      return ok;
+    };
+  }
+  let fig = figure
+    ? figure
     : `SetCoords(400,285.5,40,false,411,308);SetCoordsStyle("isAxis:false;isGrid:true;isOx:true;isOy:true;isLockOx:false;isLockOy:false;centerZoom:false;onlyPositive:false;color:#111111;fontSize:18;axisWidth:1;gridWidth:0.1");SetGeneralStyle("background-color:#F8F8F8;degree:true;dragmoveable:true");`;
-  let scale = obj.scale ? obj.scale : 1;
-  let hide_ctrl_panel = obj.hide_ctrl_panel ? obj.hide_ctrl_panel : true;
-  let interactive = obj.interactive ? obj.interactive : false;
+  // Bascule en mode consultation/déplacement (mode 0) :
+  fig += `setTimeout(()=>{this.Z.setMode(0)},1);`;
   let w = 0;
   let h = 0;
   fig.replace(
@@ -258,15 +348,37 @@ export const DGPad = function (param?: any) {
   );
   const d = Date.now();
   scale = (scale * (window.$SETTINGS.stage.width - 20)) / w;
-  const src = `<div style="pointer-events: ${
+  const src = `<div id="dgpad_frame_mask" style="position:relative;pointer-events: ${
     interactive ? "auto" : "none"
   };margin:0 auto;width:${scale * w}px;height:${
     scale * h
-  }px;overflow:hidden;border:2px solid #3a92c8"><form action="https://dgpad.net/index.php" target="dgpad_frame_${d}" method="post" style="transform-origin:left top;transform:scale(${scale})"><input type="hidden" name="file_content" value="${btoa(
+  }px;overflow:hidden;border:2px solid #3a92c8">
+  <form action="/dgpad/dgpad.php" target="dgpad_frame_${d}" method="post" style="transform-origin:left top;transform:scale(${scale})"><input type="hidden" name="file_content" value="${btoa(
     fig
   )}"><input type="hidden" name="hide_ctrlpanel" value="${
     hide_ctrl_panel ? "true" : "false"
-  }"><input type="hidden" name="show_tools" value="true"><iframe id="doceval_iframe"  name="dgpad_frame_${d}" style="width:${w}px;height:${h}px;" src="about:blank" scrolling="no" frameborder="no" oNlOAd="if (!this.parentNode.num) {this.parentNode.submit();this.parentNode.num=true}"></iframe></form></div>`;
+  }"><input type="hidden" name="show_tools" value="true"><iframe id="doceval_iframe"  name="dgpad_frame_${d}" style="width:${w}px;height:${h}px;" src="about:blank" scrolling="no" frameborder="no" oNlOAd="if (!this.parentNode.num) {this.parentNode.submit();this.parentNode.num=true}"></iframe></form><div id="dgpad_frame_reload" style="display:none;position:absolute;cursor:pointer;width:30px;height:30px;left:2px;top:2px;"><img src="./ressources/images/reload3.svg" style="width:100%"></div></div>`;
+  if (interactive) {
+    // On rajoute après coup un bouton de reload :
+    setTimeout(() => {
+      $("#dgpad_frame_reload")
+        .show()
+        .up(() => {
+          let frm = $("#doceval_iframe").dom() as any;
+          let cnv = frm.contentWindow.$CANVAS;
+          let cst = cnv.getConstruction();
+          cst.deleteAll();
+          cnv.macrosManager.clearTools();
+          cnv.textManager.clear();
+          cnv.trackManager.clear();
+          cnv.Interpret(fig);
+          cst.initAll();
+          cst.computeAll();
+          cnv.textManager.refreshInputs();
+          cnv.paint();
+        });
+    }, 100);
+  }
 
   return src;
 };

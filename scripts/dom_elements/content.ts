@@ -109,7 +109,7 @@ export class content extends div {
     }
     this.Qdiv.inner($.TeX(q));
     this.COM_FAIL.inner(o.comment());
-    this.COM_WIN.inner(o.comment());
+    // this.COM_WIN.inner(o.comment());
     this.stl(`min-height:${q === "" ? 0 : c.min_height}px`);
   }
 }

@@ -85,6 +85,16 @@ export class MOBILE_KEYBOARD {
     }
     select(rank) {
         var me = this;
+        // S'il s'agit d'un type de question sans
+        // input texte :
+        if (me.INPS.length === 0) {
+            me.keyboard.setOptions({
+                layout: {
+                    default: ["      ", "      {enter}"],
+                },
+            });
+            return;
+        }
         for (var i = 0; i < me.INPS.length; i++) {
             var inp = me.INPS[i];
             if (i === rank) {

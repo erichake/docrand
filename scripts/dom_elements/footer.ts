@@ -46,15 +46,16 @@ export class footer extends div {
       "- 1 2 3 4 5 {bksp}",
       ", 6 7 8 9 0 {enter}",
     ];
-
+    let foot = o.footer();
     let wrp = $.div()
       .att("id:student_inputs")
       .stl(
-        `position:relative;padding-top:10px;padding-bottom:10px;display:table;left:50%;transform:translate(-50%,0);font-size:28px;font-family:sans-serif;color:white`
+        `position:relative;padding-top:10px;padding-bottom:10px;display:${
+          foot.length === 0 ? "none" : "table"
+        };left:50%;transform:translate(-50%,0);font-size:28px;font-family:sans-serif;color:white`
       );
     this.dom().inner("").add(wrp);
     // En standard : foot vaut [prefix(), type(), suffix()]
-    let foot = o.footer();
     for (let rank = 1; rank < foot.length; rank += 2) {
       let p = this.dec(foot[rank - 1]);
       let s = this.dec(foot[rank + 1]);
@@ -85,6 +86,7 @@ export class footer extends div {
         c1,
         c2,
         c3;
+
       switch (foot[rank]) {
         case "exp":
           inp = INP(exp_kbd)

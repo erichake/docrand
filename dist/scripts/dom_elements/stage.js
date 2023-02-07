@@ -11,10 +11,9 @@ import { footer } from "./footer.js";
 import { content } from "./content.js";
 import { MOBILE_KEYBOARD } from "../../ressources/simple-keyboard/mobile_keyboard.js";
 export class stage extends div {
-    // DOM_R: DOMElement;
     constructor() {
         super();
-        this.$h = new header(this.setLevel.bind(this));
+        this.$h = new header(this.valid.bind(this), this.setLevel.bind(this));
         this.$c = new content();
         this.$f = new footer();
         this.current_level = -1;

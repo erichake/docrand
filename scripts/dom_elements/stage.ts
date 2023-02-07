@@ -14,7 +14,10 @@ import { LClass } from "../level.js";
 import { MOBILE_KEYBOARD } from "../../ressources/simple-keyboard/mobile_keyboard.js";
 
 export class stage extends div {
-  private $h: header = new header(this.setLevel.bind(this));
+  private $h: header = new header(
+    this.valid.bind(this),
+    this.setLevel.bind(this)
+  );
   private $c: content = new content();
   private $f: footer = new footer();
   private QUE: LClass;
@@ -27,7 +30,6 @@ export class stage extends div {
   private is_cache: boolean = false;
   private time: number = 0;
   private interval: number = 0;
-  // DOM_R: DOMElement;
 
   constructor() {
     super();

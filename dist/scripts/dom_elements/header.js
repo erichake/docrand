@@ -7,7 +7,7 @@ You should have received a copy of the GNU General Public License along with Doc
 import { $ } from "../dom_design.js";
 import { div } from "./div.js";
 export class header extends div {
-    constructor(_cb) {
+    constructor(_cb_valid, _cb_setlevel) {
         super();
         this.score = $.span().inner("0");
         this.level = $.span().inner("1");
@@ -22,7 +22,8 @@ export class header extends div {
             let dots = this.dots.findAll("#virgin_dot");
             return dots.length === 0;
         };
-        this.callback = _cb;
+        this.cb_valid = _cb_valid;
+        this.cb_setlevel = _cb_setlevel;
         const t = window.$SETTINGS.title;
         const h = window.$SETTINGS.header;
         const s = window.$SETTINGS.stage;
@@ -42,6 +43,16 @@ export class header extends div {
             .stl(`display:table-cell;max-width:${s.width - (isMB ? t.height : 2 * t.height)}px;height:${t.height}px;vertical-align:middle;font-family:sans-serif;font-size:${t.fontsize}px;color:${t.color};font-weight:bold;text-align:left;padding-left:10px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;`)
             .inner(t.text))
             .add(
+        // Bouton de reload :
+        $.div()
+            .stl(`display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`)
+            .add($.create("img")
+            .att(`src:./ressources/images/reload2.svg`)
+            .stl(`width:75%`))
+            .up(() => {
+            this.cb_setlevel();
+        }))
+            .add(
         // Bouton QRCode (uniquement sur ordi) :
         isMB
             ? $.div()
@@ -53,15 +64,17 @@ export class header extends div {
                 .att(`src:./ressources/images/qrcode.svg`)
                 .stl(`width:75%`))))
             .add(
-        // Bouton de reload :
-        $.div()
-            .stl(`display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`)
-            .add($.create("img")
-            .att(`src:./ressources/images/reload2.svg`)
-            .stl(`width:75%`))
-            .up(() => {
-            this.callback();
-        })))
+        // Bouton Next pour questions sans input (uniquement sur ordi) :
+        isMB
+            ? $.div()
+            : $.div()
+                .stl(`display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`)
+                .add($.create("img")
+                .att(`src:./ressources/images/next.svg`)
+                .stl(`width:75%`))
+                .up(() => {
+                this.cb_valid();
+            })))
             .add((this.table = $.div()
             .stl(`display:table;width:${s.width}px;height:${h.height}px;color:${h.color};background-color:${h.background};user-select:none;-webkit-user-select:none`)
             .add($.div()
@@ -141,7 +154,7 @@ export class header extends div {
             btns[rank].stl(`background:${b.select_background};color:${b.select_color}`);
             btns[rank].getValue().selected = true;
             btns[rank].updateHover();
-            this.callback(rank + 1);
+            this.cb_setlevel(rank + 1);
         }
     }
     get_score() {

@@ -8,6 +8,7 @@ You should have received a copy of the GNU General Public License along with Doc
 import { LClass } from "scripts/level.js";
 import { $, DOMElement } from "../dom_design.js";
 import { div } from "./div.js";
+import { stage } from "./stage.js";
 
 export class header extends div {
   private score: DOMElement = $.span().inner("0");
@@ -25,13 +26,16 @@ export class header extends div {
   );
   private nbQuestions: DOMElement = $.span();
   private nbLevels: number = window.$LEVELS.length;
-  private callback: (n?: number) => void;
+  private cb_valid: () => void;
+  private cb_setlevel: (n?: number) => void;
   private table: DOMElement;
   private fx_banner: DOMElement;
   private row2: DOMElement;
-  constructor(_cb: (n: number) => void) {
+
+  constructor(_cb_valid: () => void, _cb_setlevel: (n: number) => void) {
     super();
-    this.callback = _cb;
+    this.cb_valid = _cb_valid;
+    this.cb_setlevel = _cb_setlevel;
     const t = window.$SETTINGS.title;
     const h = window.$SETTINGS.header;
     const s = window.$SETTINGS.stage;
@@ -75,6 +79,22 @@ export class header extends div {
                 )
                 .inner(t.text)
             )
+
+            .add(
+              // Bouton de reload :
+              $.div()
+                .stl(
+                  `display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`
+                )
+                .add(
+                  $.create("img")
+                    .att(`src:./ressources/images/reload2.svg`)
+                    .stl(`width:75%`)
+                )
+                .up(() => {
+                  this.cb_setlevel();
+                })
+            )
             .add(
               // Bouton QRCode (uniquement sur ordi) :
               isMB
@@ -96,19 +116,21 @@ export class header extends div {
                     )
             )
             .add(
-              // Bouton de reload :
-              $.div()
-                .stl(
-                  `display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`
-                )
-                .add(
-                  $.create("img")
-                    .att(`src:./ressources/images/reload2.svg`)
-                    .stl(`width:75%`)
-                )
-                .up(() => {
-                  this.callback();
-                })
+              // Bouton Next pour questions sans input (uniquement sur ordi) :
+              isMB
+                ? $.div()
+                : $.div()
+                    .stl(
+                      `display:table-cell;width:${t.height}px;height:${t.height}px;vertical-align:middle;cursor: pointer`
+                    )
+                    .add(
+                      $.create("img")
+                        .att(`src:./ressources/images/next.svg`)
+                        .stl(`width:75%`)
+                    )
+                    .up(() => {
+                      this.cb_valid();
+                    })
             )
         )
 
@@ -236,7 +258,7 @@ export class header extends div {
       );
       btns[rank].getValue().selected = true;
       btns[rank].updateHover();
-      this.callback(rank + 1);
+      this.cb_setlevel(rank + 1);
     }
   }
 
