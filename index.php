@@ -19,6 +19,14 @@ You should have received a copy of the GNU General Public License along with Doc
 <?php
 mb_internal_encoding("UTF-8");
 
+$l = isset($_GET["level"]) ? $_GET["level"] : null;
+$l = isset($_POST["level"]) ? $_POST["level"] : $l;
+if (($l)) {
+    echo "<script>window.\$START_LEVEL=".$l.";</script>";
+} else {
+    echo "<script>window.\$START_LEVEL=1;</script>";
+}
+
 $u = isset($_GET["url"]) ? $_GET["url"] : null;
 $u = isset($_POST["url"]) ? $_POST["url"] : $u;
 if (($u)) {

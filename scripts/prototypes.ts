@@ -11,6 +11,7 @@ declare global {
   type v2D = [number, number];
   interface Window {
     RDM: (x: number, y: number) => number;
+    $START_LEVEL: number;
     $PLUGIN: any;
     $SETTINGS: any;
     $LEVELS: string[];

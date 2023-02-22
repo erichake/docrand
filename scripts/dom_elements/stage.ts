@@ -102,7 +102,26 @@ export class stage extends div {
       }
     });
 
-    this.setLevel(1);
+    // window.$START_LEVEL correspond au paramètre "level" passé éventuellement
+    // à index.php. Si le paramètre "level" n'est pas passé au php,
+    // window.$START_LEVEL vaut 1 :
+    const btns = $("#top_banner").findAll("#level_button");
+    if (window.$START_LEVEL > 0 && window.$START_LEVEL <= btns.length) {
+      this.setLevel(window.$START_LEVEL);
+      const L = window.$START_LEVEL - 1;
+      if (L !== 0) {
+        const prf = window.$SETTINGS.header.levels.button;
+        btns[0].getValue().selected = false;
+        btns[0].stl(`background:${prf.background};color:${prf.color}`);
+        btns[L].getValue().selected = true;
+        btns[L].stl(
+          `background:${prf.select_background};color:${prf.select_color}`
+        );
+      }
+    } else {
+      this.setLevel(1);
+    }
+
     if (this.KBD.isMobileDevice())
       document.addEventListener("swiped-left", this.valid.bind(this));
     window.addEventListener("resize", this.resize.bind(this));
