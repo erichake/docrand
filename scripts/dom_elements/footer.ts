@@ -324,7 +324,26 @@ export class footer extends div {
           break;
       }
     }
+
+    // Le focus dans le premier input ne doit pas se faire
+    // au démarrage quand jeu est dans une iframe : si c'était
+    // le cas, ce focus ferait dérouler la page, il faut donc
+    // éviter cela pour la toute premiere passe (d'où le $FLAG_0) :
     const allINPS = wrp.dom().getElementsByTagName("input");
-    if (allINPS.length > 0) allINPS[0].focus();
+    if (allINPS.length > 0) {
+      if (window.location === window.parent.location) {
+        // Si je ne suis pas dans une iframe :
+        allINPS[0].focus();
+      } else {
+        // Si je suis dans une iframe :
+        if (window.$FLAG_0) {
+          // Première fois, sans focus() :
+          window.$FLAG_0 = false;
+        } else {
+          // Les autres fois, avec focus() :
+          allINPS[0].focus();
+        }
+      }
+    }
   }
 }

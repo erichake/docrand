@@ -4,6 +4,7 @@ DocRand is free software: you can redistribute it and/or modify it under the ter
 DocRand is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with DocRand. If not, see <https://www.gnu.org/licenses/>.
 **************************************/
+window.$FLAG_0 = true;
 window.$LEVELS = [];
 window.RDM = function (x, y) {
     return Math.floor(Math.min(x, y) + Math.random() * (Math.abs(y - x) + 1));

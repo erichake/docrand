@@ -11,6 +11,7 @@ declare global {
   type v2D = [number, number];
   interface Window {
     RDM: (x: number, y: number) => number;
+    $FLAG_0: boolean;
     $START_LEVEL: number;
     $PLUGIN: any;
     $SETTINGS: any;
@@ -46,6 +47,7 @@ declare global {
   }
 }
 
+window.$FLAG_0 = true;
 window.$LEVELS = [];
 
 window.RDM = function (x: number, y: number) {
