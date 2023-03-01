@@ -8,10 +8,13 @@ You should have received a copy of the GNU General Public License along with Doc
 import { $, DOMElement } from "../dom_design.js";
 import { div } from "./div.js";
 import { LClass } from "../level.js";
+import { MOBILE_KEYBOARD } from "ressources/simple-keyboard/mobile_keyboard.js";
 
 export class footer extends div {
-  constructor() {
+  getKBD: () => MOBILE_KEYBOARD;
+  constructor(_cb_getKBD: () => MOBILE_KEYBOARD) {
     super();
+    this.getKBD = _cb_getKBD;
     const s = window.$SETTINGS.stage;
     const p = window.$SETTINGS.footer;
     this.stl(
@@ -20,6 +23,7 @@ export class footer extends div {
   }
 
   setLevel(o: LClass) {
+    const me = this;
     const INP = function (kbd: string[]): DOMElement {
       let inp = $.input()
         .att(
@@ -38,14 +42,42 @@ export class footer extends div {
         )
         .add(dm);
     };
+
     const int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9  {enter}"];
     const dec_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 , {enter}"];
     const lst_int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 ; {enter}"];
-    const exp_kbd = [
-      "+ * / x y ( )",
-      "- 1 2 3 4 5 {bksp}",
-      ", 6 7 8 9 0 {enter}",
-    ];
+
+    // Seulement pour le type expand :
+    const expand_kbd = function (): string[] {
+      const kbd = ["+ - 0 1 2 3 4 {bksp}", "/ , 5 6 7 8 9 {enter}"];
+      if (me.getKBD().isMobileDevice()) {
+        const display = me.getKBD().keyboard.options.display;
+        const custom_keys = o.customKeys();
+        if (custom_keys.length > 0) {
+          for (let i = 0; i < custom_keys.length; i++) {
+            const k = custom_keys[i].split("$$");
+            if (k.length > 1) {
+              custom_keys[i] = `{${k[1]}}`;
+              display[custom_keys[i]] = `<span style="font-size:32px">${window.katex.renderToString(k[1])}</span>`;
+            }
+          }
+          kbd.unshift(custom_keys.join(" "));
+        } else {
+          let t0: string[] = ["^"];
+          let t1: string[] = o.vars();
+          for (let i = 0; i < t1.length; i++) {
+            const k = t1[i];
+            t1[i] = `{${k}}`;
+            display[t1[i]] = `<span style="font-size:32px">${window.katex.renderToString(k)}</span>`;
+          }
+          for (let i = t1.length; i < 7; i++) {
+            t0.push("");
+          }
+          kbd.unshift(t0.concat(t1).join(" "));
+        }
+      }
+      return kbd;
+    };
     let foot = o.footer();
     let wrp = $.div()
       .att("id:student_inputs")
@@ -88,15 +120,14 @@ export class footer extends div {
         c3;
 
       switch (foot[rank]) {
-        case "exp":
-          inp = INP(exp_kbd)
+        case "expand":
+          inp = INP(expand_kbd())
             .att(`pattern:[\w\d]+`)
             .stl(
-              `display:table-cell;margin-left:5px;margin-right:5px;width:150px`
+              `display:table-cell;margin-left:5px;margin-right:5px;width:300px`
             );
           o.addinput(inp);
           wrp.add(pre).add(inp).add(suf);
-          // (inp.dom() as HTMLInputElement).focus();
           break;
         case "lst_int":
           let com = $.div()

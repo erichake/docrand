@@ -6,10 +6,10 @@ You should have received a copy of the GNU General Public License along with Doc
 **************************************/
 
 import { $, DOMElement } from "./dom_design.js";
+import { Polynomial } from "./polynomial.js";
 
 const RepTypes = [
-  // "exp" en chantier :
-  "exp",
+  "expand",
   "lst_int",
   "int",
   "dec",
@@ -61,9 +61,19 @@ export class LClass {
   answer(): any[] {
     return [];
   }
-
   comment(): string {
     return "";
+  }
+  customKeys(): string[] {
+    return [];
+  }
+  vars(): string[] {
+    const r = this.answer()[0];
+    let t0: AssociativeArray = {};
+    r.replace(/([a-zA-Z])/g, function (a: string, m: string) {
+      t0[m] = "";
+    });
+    return Object.keys(t0).sort();
   }
   setNB(_n: number) {
     this.NB = _n;
@@ -86,6 +96,7 @@ export class LClass {
     return [this.prefix(), this.type(), this.suffix()];
   }
   check(): boolean {
+    let me = this;
     let eq = function (m: number, n: number): boolean {
       return Math.abs(m - n) < 1e-8;
     };
@@ -95,13 +106,49 @@ export class LClass {
     let ok: boolean;
     let stud, teach;
     switch (this.type()) {
-      case "exp":
-        // en chantier...
-        stud = t[0].replace(/\s/g, "");
-        ok = false;
-        for (let i = 0; i < this.answer().length; i++) {
-          ok = ok || stud === this.answer()[i];
+      case "expand":
+        let P = new Polynomial(this.answer()[0]);
+        let ST = t[0].replace(/\s/g, "");
+        const OK = function (): boolean {
+          let vs = me.vars();
+          let v = vs.length === 0 ? "" : vs[0];
+          try {
+            const f = new Function(
+              `${v}`,
+              `return (${P.getJSCode(ST)})-(${P.getJSCode()});`
+            );
+            for (let i = -20; i < 20; i++) {
+              if (CUT(f(i)) !== 0) return false;
+            }
+          } catch (e) {
+            return false;
+          }
+          return true;
+        };
+        ok = OK();
+        if (ok) {
+          if (ST.indexOf("(") !== -1) {
+            ok = false;
+            $("#COM_FAIL")
+              .inner(
+                "Votre expression est correcte, mais elle n'est pas réduite : elle devrait être sans parenthèse !"
+              )
+              .stl("color:green;text-align:center;font-weight:bold");
+          } else if (Math.abs(P.expand().length - ST.length) > 1) {
+            ok = false;
+            $("#COM_FAIL")
+              .inner(
+                "Votre expression est correcte, mais il fallait réduire plus !"
+              )
+              .stl("color:green;text-align:center;font-weight:bold");
+          }
         }
+        if (!ok) {
+          this.answer = function (): any[] {
+            return [P.expand()];
+          };
+        }
+
         break;
       case "lst_int":
         //student:
@@ -152,6 +199,9 @@ export class LClass {
     for (let rank = 1; rank < foot.length; rank += 2) {
       let tpe = foot[rank];
       switch (tpe) {
+        case "expand":
+          tex.push(`$$${a[m++]}$$`);
+          break;
         case "lst_int":
           tex.push(`$$${a[m++]}$$`);
           break;
@@ -381,4 +431,9 @@ export const DGPad = function (obj: LClass, figure?: string, param?: any) {
   }
 
   return src;
+};
+
+export const EXPAND = function (_exp: string) {
+  let p = new Polynomial(_exp);
+  return p.expand();
 };

@@ -7,13 +7,15 @@ You should have received a copy of the GNU General Public License along with Doc
 import { $ } from "../dom_design.js";
 import { div } from "./div.js";
 export class footer extends div {
-    constructor() {
+    constructor(_cb_getKBD) {
         super();
+        this.getKBD = _cb_getKBD;
         const s = window.$SETTINGS.stage;
         const p = window.$SETTINGS.footer;
         this.stl(`position:relative;width:${s.width}px;background-color:${p.background}`).att(`id:student_answer_footer`);
     }
     setLevel(o) {
+        const me = this;
         const INP = function (kbd) {
             let inp = $.input()
                 .att(`id:input_html_element;type:text;pattern:[0-9]*;inputmode:decimal;onclick:this.setSelectionRange(0, this.value.length);autocomplete:off;autocomplete:off;autocapitalize:off`)
@@ -29,11 +31,38 @@ export class footer extends div {
         const int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9  {enter}"];
         const dec_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 , {enter}"];
         const lst_int_kbd = ["0 1 2 3 4 - {bksp}", "5 6 7 8 9 ; {enter}"];
-        const exp_kbd = [
-            "+ * / x y ( )",
-            "- 1 2 3 4 5 {bksp}",
-            ", 6 7 8 9 0 {enter}",
-        ];
+        // Seulement pour le type expand :
+        const expand_kbd = function () {
+            const kbd = ["+ - 0 1 2 3 4 {bksp}", "/ , 5 6 7 8 9 {enter}"];
+            if (me.getKBD().isMobileDevice()) {
+                const display = me.getKBD().keyboard.options.display;
+                const custom_keys = o.customKeys();
+                if (custom_keys.length > 0) {
+                    for (let i = 0; i < custom_keys.length; i++) {
+                        const k = custom_keys[i].split("$$");
+                        if (k.length > 1) {
+                            custom_keys[i] = `{${k[1]}}`;
+                            display[custom_keys[i]] = `<span style="font-size:32px">${window.katex.renderToString(k[1])}</span>`;
+                        }
+                    }
+                    kbd.unshift(custom_keys.join(" "));
+                }
+                else {
+                    let t0 = ["^"];
+                    let t1 = o.vars();
+                    for (let i = 0; i < t1.length; i++) {
+                        const k = t1[i];
+                        t1[i] = `{${k}}`;
+                        display[t1[i]] = `<span style="font-size:32px">${window.katex.renderToString(k)}</span>`;
+                    }
+                    for (let i = t1.length; i < 7; i++) {
+                        t0.push("");
+                    }
+                    kbd.unshift(t0.concat(t1).join(" "));
+                }
+            }
+            return kbd;
+        };
         let foot = o.footer();
         let wrp = $.div()
             .att("id:student_inputs")
@@ -54,13 +83,12 @@ export class footer extends div {
                 .stl("display:table-cell;vertical-align:middle");
             let inp, inp1, inp2, inp3, inp1wrp, inp2wrp, ten, h, min, sec, sep, div, c1, c2, c3;
             switch (foot[rank]) {
-                case "exp":
-                    inp = INP(exp_kbd)
+                case "expand":
+                    inp = INP(expand_kbd())
                         .att(`pattern:[\w\d]+`)
-                        .stl(`display:table-cell;margin-left:5px;margin-right:5px;width:150px`);
+                        .stl(`display:table-cell;margin-left:5px;margin-right:5px;width:300px`);
                     o.addinput(inp);
                     wrp.add(pre).add(inp).add(suf);
-                    // (inp.dom() as HTMLInputElement).focus();
                     break;
                 case "lst_int":
                     let com = $.div()

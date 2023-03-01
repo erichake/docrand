@@ -28,7 +28,7 @@ export class content extends div {
             .add($.div()
             .stl(`font-size:80%;text-align:justify;padding-left:10px;padding-right:10px;padding-top:10px;color:${c.comment.color}`)
             .add($.span().inner(""))
-            .add((this.COM_FAIL = $.span()))))
+            .add((this.COM_FAIL = $.span().att("id:COM_FAIL")))))
             .add((this.WIN = $.div()
             .stl(`width:100%;text-align:center;color:${c.you_win.color};font-family:sans-serif;overflow:hidden;line-height:0;font-size:0px;font-weight:bold;padding-top:0px;padding-bottom:0px;background:${c.you_win.background};height:0px`)
             .inner(c.you_win.text)).add($.div()
@@ -42,6 +42,7 @@ export class content extends div {
         this.WIN.stl(`height:0px;transition:unset;line-height:0;font-size:0px;padding-top:0px;padding-bottom:0px`);
     }
     show_youfail(o) {
+        // console.log("tex=" + $.TeX(o.tex_answer()));
         const c = window.$SETTINGS.content;
         this.ANS.inner($.TeX(o.tex_answer()));
         this.FAIL.stl(`height:unset;transition: all ${c.you_fail.transition_time}s;line-height:1;font-size:${c.you_fail.fontsize}px;padding-top:20px;padding-bottom:20px`);
@@ -64,7 +65,6 @@ export class content extends div {
         }
         this.Qdiv.inner($.TeX(q));
         this.COM_FAIL.inner(o.comment());
-        // this.COM_WIN.inner(o.comment());
         this.stl(`min-height:${q === "" ? 0 : c.min_height}px`);
     }
 }

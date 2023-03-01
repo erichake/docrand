@@ -15,7 +15,7 @@ export class stage extends div {
         super();
         this.$h = new header(this.valid.bind(this), this.setLevel.bind(this));
         this.$c = new content();
-        this.$f = new footer();
+        this.$f = new footer(this.getKBD.bind(this));
         this.current_level = -1;
         this.KBD = new MOBILE_KEYBOARD();
         this.is_cache = false;
@@ -89,6 +89,12 @@ export class stage extends div {
             document.addEventListener("swiped-left", this.valid.bind(this));
         window.addEventListener("resize", this.resize.bind(this));
         this.resize();
+    }
+    getKBD() {
+        return this.KBD;
+    }
+    addToKeyboard(keys) {
+        console.log(this.KBD.keyboard.options);
     }
     makeSnapshot() {
         let bnd = $("#content_footer_wrapper").dom().getBoundingClientRect();

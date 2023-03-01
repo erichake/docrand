@@ -52,7 +52,7 @@ export class content extends div {
                 `font-size:80%;text-align:justify;padding-left:10px;padding-right:10px;padding-top:10px;color:${c.comment.color}`
               )
               .add($.span().inner(""))
-              .add((this.COM_FAIL = $.span()))
+              .add((this.COM_FAIL = $.span().att("id:COM_FAIL")))
           )
       )
       .add(
@@ -80,6 +80,7 @@ export class content extends div {
     );
   }
   show_youfail(o: LClass) {
+    // console.log("tex=" + $.TeX(o.tex_answer()));
     const c = window.$SETTINGS.content;
     this.ANS.inner($.TeX(o.tex_answer()));
     this.FAIL.stl(
@@ -109,7 +110,6 @@ export class content extends div {
     }
     this.Qdiv.inner($.TeX(q));
     this.COM_FAIL.inner(o.comment());
-    // this.COM_WIN.inner(o.comment());
     this.stl(`min-height:${q === "" ? 0 : c.min_height}px`);
   }
 }

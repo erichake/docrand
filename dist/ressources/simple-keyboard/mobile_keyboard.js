@@ -152,6 +152,12 @@ export class MOBILE_KEYBOARD {
             case "{bksp}":
                 break;
             default:
+                button.replace(/^{(.*)}$/, (_a, _m) => {
+                    const inp = me.INPS[me.selection].dom();
+                    me.INPS[me.selection].val(inp.value + _m);
+                    me.keyboard.setInput(inp.value);
+                    me.firstTime = false;
+                });
         }
     }
 }

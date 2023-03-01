@@ -9,6 +9,7 @@ export {};
 declare global {
   type v3D = [number, number, number];
   type v2D = [number, number];
+
   interface Window {
     RDM: (x: number, y: number) => number;
     $FLAG_0: boolean;
@@ -18,6 +19,10 @@ declare global {
     $LEVELS: string[];
     katex: any;
     SimpleKeyboard: any;
+  }
+
+  interface AssociativeArray {
+    [key: string]: string | boolean | number;
   }
   interface Array<T> {
     isnull(): boolean;
