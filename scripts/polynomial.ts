@@ -26,8 +26,6 @@ export class Polynomial {
       exp = exp.replace(rg, "$1*$2");
     }
 
-    console.log(exp);
-
     // Masquage des paires de parenthèses par une chaine
     // "POL_i" et enregistrement du contenu de chaque paires de
     // parenthèses dans un tableau POLS :
@@ -103,7 +101,6 @@ export class Polynomial {
 
   expand(): string {
     if (this.EXP_EXPAND) return this.EXP_EXPAND;
-    console.log(this.EXP_PREFIX);
     let t: number[] = this.evalPREFIX();
     let str = "";
     for (let i = t.length - 1; i >= 0; i--) {
