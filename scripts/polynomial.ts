@@ -9,7 +9,6 @@ export class Polynomial {
   }
   private parse(exp: string) {
     this.EXP_ORIGIN = exp;
-    console.log(exp);
 
     // Enregistrement du nom de la variable :
     exp.replace(/([a-zA-Z])/, (a, m) => {
@@ -117,7 +116,10 @@ export class Polynomial {
     let EX = typeof exp === "undefined" ? this.EXP_ORIGIN : exp;
 
     // Ajout du signe * lorsqu'il est sous-entendu :
-    EX = EX.replace(/([0-9a-zA-Z_\)])([a-zA-Z\(])/g, "$1*$2");
+    const rg = /([0-9a-zA-Z_\)])([a-zA-Z\(])/;
+    while (rg.exec(EX) !== null) {
+      EX = EX.replace(rg, "$1*$2");
+    }
 
     // Remplacement du caret (^) par le symbole puissance "**" :
     EX = EX.replace(/\^/g, "**");
