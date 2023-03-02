@@ -43,6 +43,7 @@ export class Polynomial {
     }
     parse(exp) {
         this.EXP_ORIGIN = exp;
+        console.log(exp);
         // Enregistrement du nom de la variable :
         exp.replace(/([a-zA-Z])/, (a, m) => {
             this.VARNAME = m;
@@ -52,7 +53,7 @@ export class Polynomial {
         // début de parenthèse par 0- :
         exp = exp.replace(/(^|\()-/g, "$10-");
         // Ajout du signe * lorsqu'il est sous-entendu :
-        let rg = new RegExp(`([0-9a-zA-Z_\\)])([a-zA-Z\\(])`);
+        let rg = /([0-9a-zA-Z_\)])([a-zA-Z\(])/;
         while (rg.exec(exp) !== null) {
             exp = exp.replace(rg, "$1*$2");
         }
@@ -123,7 +124,6 @@ export class Polynomial {
     expand() {
         if (this.EXP_EXPAND)
             return this.EXP_EXPAND;
-        console.log(this.EXP_PREFIX);
         let t = this.evalPREFIX();
         let str = "";
         for (let i = t.length - 1; i >= 0; i--) {
@@ -131,8 +131,8 @@ export class Polynomial {
                 continue;
             str += `${i !== t.length - 1 && t[i] > 0 ? "+" : ""}${t[i] === 1 && i > 0 ? "" : t[i]}${i > 0 ? this.VARNAME : ""}${i > 1 ? "^" + i : ""}`;
         }
-        this.EXP_EXPAND = str === "" ? "0" : str;
-        return this.EXP_EXPAND;
+        this.EXP_EXPAND = str;
+        return str;
     }
     getJSCode(exp) {
         let EX = typeof exp === "undefined" ? this.EXP_ORIGIN : exp;
