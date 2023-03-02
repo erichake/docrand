@@ -21,7 +21,12 @@ export class Polynomial {
     exp = exp.replace(/(^|\()-/g, "$10-");
 
     // Ajout du signe * lorsqu'il est sous-entendu :
-    exp = exp.replace(/([0-9a-zA-Z_\)])([a-zA-Z\(])/g, "$1*$2");
+    let rg = new RegExp(`([0-9a-zA-Z_\\)])([a-zA-Z\\(])`);
+    while (rg.exec(exp) !== null) {
+      exp = exp.replace(rg, "$1*$2");
+    }
+
+    console.log(exp);
 
     // Masquage des paires de parenthèses par une chaine
     // "POL_i" et enregistrement du contenu de chaque paires de
@@ -89,7 +94,7 @@ export class Polynomial {
     // x devient [0,1]
     exp = POLS[POLS.length - 1];
     exp = exp.replace(/([0-9]+)/g, "[$1]");
-    const rg = new RegExp(`([^a-zA-Z])([a-zA-Z])([^a-zA-Z])`);
+    rg = new RegExp(`([^a-zA-Z])([a-zA-Z])([^a-zA-Z])`);
     while (rg.exec(exp) !== null) {
       exp = exp.replace(rg, "$1[0,1]$3");
     }
@@ -98,6 +103,7 @@ export class Polynomial {
 
   expand(): string {
     if (this.EXP_EXPAND) return this.EXP_EXPAND;
+    console.log(this.EXP_PREFIX);
     let t: number[] = this.evalPREFIX();
     let str = "";
     for (let i = t.length - 1; i >= 0; i--) {
@@ -106,8 +112,8 @@ export class Polynomial {
         t[i] === 1 && i > 0 ? "" : t[i]
       }${i > 0 ? this.VARNAME : ""}${i > 1 ? "^" + i : ""}`;
     }
-    this.EXP_EXPAND = str;
-    return str;
+    this.EXP_EXPAND = str === "" ? "0" : str;
+    return this.EXP_EXPAND;
   }
   getJSCode(exp?: string): string {
     let EX = typeof exp === "undefined" ? this.EXP_ORIGIN : exp;
