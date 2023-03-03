@@ -22,9 +22,15 @@ mb_internal_encoding("UTF-8");
 $l = isset($_GET["level"]) ? $_GET["level"] : null;
 $l = isset($_POST["level"]) ? $_POST["level"] : $l;
 if (($l)) {
-    echo "<script>window.\$START_LEVEL=".$l.";</script>";
+    echo "<script>window.\$START_LEVEL=" . $l . ";</script>";
 } else {
     echo "<script>window.\$START_LEVEL=1;</script>";
+}
+
+$l = isset($_GET["mobile"]) ? $_GET["mobile"] : null;
+$l = isset($_POST["mobile"]) ? $_POST["mobile"] : $l;
+if (($l)) {
+    echo "<script>window.\$MOBILE_MODE=" . $l . ";</script>";
 }
 
 $u = isset($_GET["url"]) ? $_GET["url"] : null;

@@ -14,6 +14,7 @@ declare global {
     RDM: (x: number, y: number) => number;
     $FLAG_0: boolean;
     $START_LEVEL: number;
+    $MOBILE_MODE: boolean;
     $PLUGIN: any;
     $SETTINGS: any;
     $LEVELS: string[];

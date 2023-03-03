@@ -27,6 +27,8 @@ export class MOBILE_KEYBOARD {
         }
     }
     isMobileDevice() {
+        if (window.hasOwnProperty("$MOBILE_MODE"))
+            return window.$MOBILE_MODE;
         return "ontouchstart" in window;
     }
     show() {
