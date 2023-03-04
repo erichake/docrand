@@ -115,6 +115,10 @@ export class Polynomial {
   getJSCode(exp?: string): string {
     let EX = typeof exp === "undefined" ? this.EXP_ORIGIN : exp;
 
+    // Remplacement des - en début d'expression ou en
+    // début de parenthèse par 0- :
+    EX = EX.replace(/(^|\()-/g, "$10-");
+
     // Ajout du signe * lorsqu'il est sous-entendu :
     const rg = /([0-9a-zA-Z_\)])([a-zA-Z\(])/;
     while (rg.exec(EX) !== null) {

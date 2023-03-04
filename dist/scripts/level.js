@@ -106,6 +106,7 @@ export class LClass {
                 const OK = function () {
                     let vs = me.vars();
                     let v = vs.length === 0 ? "" : vs[0];
+                    console.log(P.getJSCode(ST));
                     try {
                         const f = new Function(`${v}`, `return (${P.getJSCode(ST)})-(${P.getJSCode()});`);
                         for (let i = -20; i < 20; i++) {
