@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License along with Doc
 **************************************/
 import { $ } from "./dom_design.js";
 import { Polynomial } from "./polynomial.js";
+import { $PREFS } from "./preferences.js";
 const RepTypes = [
     "expand",
     "lst_int",
@@ -106,7 +107,6 @@ export class LClass {
                 const OK = function () {
                     let vs = me.vars();
                     let v = vs.length === 0 ? "" : vs[0];
-                    console.log(P.getJSCode(ST));
                     try {
                         const f = new Function(`${v}`, `return (${P.getJSCode(ST)})-(${P.getJSCode()});`);
                         for (let i = -20; i < 20; i++) {
@@ -115,6 +115,10 @@ export class LClass {
                         }
                     }
                     catch (e) {
+                        $("#COM_FAIL").parent().stl("text-align:center");
+                        $("#COM_FAIL")
+                            .inner($PREFS.content.you_fail.comment1)
+                            .stl("color:#660000;font-weight:bold;font-style:italic");
                         return false;
                     }
                     return true;
@@ -123,15 +127,17 @@ export class LClass {
                 if (ok) {
                     if (ST.indexOf("(") !== -1) {
                         ok = false;
+                        $("#COM_FAIL").parent().stl("text-align:center");
                         $("#COM_FAIL")
-                            .inner("Votre expression est correcte, mais elle n'est pas réduite : elle devrait être sans parenthèse !")
-                            .stl("color:green;text-align:center;font-weight:bold");
+                            .inner($PREFS.content.you_fail.comment2)
+                            .stl("color:green;font-weight:bold;font-style:italic");
                     }
                     else if (Math.abs(P.expand().length - ST.length) > 1) {
                         ok = false;
+                        $("#COM_FAIL").parent().stl("text-align:center");
                         $("#COM_FAIL")
-                            .inner("Votre expression est correcte, mais il fallait réduire plus !")
-                            .stl("color:green;text-align:center;font-weight:bold");
+                            .inner($PREFS.content.you_fail.comment3)
+                            .stl("color:green;font-weight:bold;font-style:italic");
                     }
                 }
                 if (!ok) {

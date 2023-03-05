@@ -88,6 +88,11 @@ export const $PREFS = {
       text1: "Faux !",
       text2: "La réponse attendue était : ",
       transition_time: 0.2,
+      comment1:
+        "Votre expression est mal écrite :<br>il y a des erreurs de syntaxe !",
+      comment2:
+        "Votre expression est correcte, mais elle n'est pas réduite : elle devrait être sans parenthèse !",
+      comment3: "Votre expression est correcte, mais il fallait réduire plus !",
     },
     you_win: {
       color: "#006600",

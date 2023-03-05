@@ -7,6 +7,7 @@ You should have received a copy of the GNU General Public License along with Doc
 
 import { $, DOMElement } from "./dom_design.js";
 import { Polynomial } from "./polynomial.js";
+import { $PREFS } from "./preferences.js";
 
 const RepTypes = [
   "expand",
@@ -121,6 +122,10 @@ export class LClass {
               if (CUT(f(i)) !== 0) return false;
             }
           } catch (e) {
+            $("#COM_FAIL").parent().stl("text-align:center");
+            $("#COM_FAIL")
+              .inner($PREFS.content.you_fail.comment1)
+              .stl("color:#660000;font-weight:bold;font-style:italic");
             return false;
           }
           return true;
@@ -129,18 +134,16 @@ export class LClass {
         if (ok) {
           if (ST.indexOf("(") !== -1) {
             ok = false;
+            $("#COM_FAIL").parent().stl("text-align:center");
             $("#COM_FAIL")
-              .inner(
-                "Votre expression est correcte, mais elle n'est pas réduite : elle devrait être sans parenthèse !"
-              )
-              .stl("color:green;text-align:center;font-weight:bold");
+            .inner($PREFS.content.you_fail.comment2)
+              .stl("color:green;font-weight:bold;font-style:italic");
           } else if (Math.abs(P.expand().length - ST.length) > 1) {
             ok = false;
+            $("#COM_FAIL").parent().stl("text-align:center");
             $("#COM_FAIL")
-              .inner(
-                "Votre expression est correcte, mais il fallait réduire plus !"
-              )
-              .stl("color:green;text-align:center;font-weight:bold");
+            .inner($PREFS.content.you_fail.comment3)
+              .stl("color:green;font-weight:bold;font-style:italic");
           }
         }
         if (!ok) {

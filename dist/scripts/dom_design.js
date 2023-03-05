@@ -225,6 +225,9 @@ export class DOMElement {
             e.parentNode.removeChild(e);
         return this;
     }
+    parent() {
+        return $(this.elt.parentNode);
+    }
     wrapper() {
         let e = this.elt;
         return $(e.parentNode);
