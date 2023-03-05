@@ -9,6 +9,7 @@ import { $, DOMElement } from "../dom_design.js";
 import { div } from "./div.js";
 import { LClass } from "../level.js";
 import { MOBILE_KEYBOARD } from "ressources/simple-keyboard/mobile_keyboard.js";
+import { $PREFS } from "../preferences.js";
 
 export class footer extends div {
   getKBD: () => MOBILE_KEYBOARD;
@@ -58,7 +59,11 @@ export class footer extends div {
             const k = custom_keys[i].split("$$");
             if (k.length > 1) {
               custom_keys[i] = `{${k[1]}}`;
-              display[custom_keys[i]] = `<span style="font-size:32px">${window.katex.renderToString(k[1])}</span>`;
+              display[
+                custom_keys[i]
+              ] = `<span style="font-size:32px">${window.katex.renderToString(
+                k[1]
+              )}</span>`;
             }
           }
           kbd.unshift(custom_keys.join(" "));
@@ -68,7 +73,11 @@ export class footer extends div {
           for (let i = 0; i < t1.length; i++) {
             const k = t1[i];
             t1[i] = `{${k}}`;
-            display[t1[i]] = `<span style="font-size:32px">${window.katex.renderToString(k)}</span>`;
+            display[
+              t1[i]
+            ] = `<span style="font-size:32px">${window.katex.renderToString(
+              k
+            )}</span>`;
           }
           for (let i = t1.length; i < 7; i++) {
             t0.push("");
@@ -104,6 +113,7 @@ export class footer extends div {
         .stl("display:table-cell;vertical-align:middle");
 
       let inp,
+        com,
         inp1,
         inp2,
         inp3,
@@ -121,22 +131,27 @@ export class footer extends div {
 
       switch (foot[rank]) {
         case "expand":
-          inp = INP(expand_kbd())
-            .att(`pattern:[\w\d]+`)
+          com = $.div()
             .stl(
-              `display:table-cell;margin-left:5px;margin-right:5px;width:300px`
-            );
+              `text-align:center;font-size:14px;font-style:italic;vertical-align:middle;width:100%`
+            )
+            .inner($PREFS.footer.comment1);
+          const ln2 = $.div().stl(
+            `display:table;vertical-align:middle;margin-top:10px;width:100%`
+          );
+          inp = INP(expand_kbd()).stl(
+            `display:table-cell;margin-left:5px;margin-right:5px;width:300px`
+          );
+          ln2.add(pre).add(inp).add(suf);
           o.addinput(inp);
-          wrp.add(pre).add(inp).add(suf);
+          wrp.add(com).add(ln2);
           break;
         case "lst_int":
-          let com = $.div()
+          com = $.div()
             .stl(
-              `display:table-row;font-size:14px;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:3px;width:90%`
+              `display:table-row;font-size:14px;font-style:italic;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:3px;width:90%`
             )
-            .inner(
-              `Réponse sous forme d'une liste de nombres entiers séparés par des points-virgules :`
-            );
+            .inner($PREFS.footer.comment2);
           inp = INP(lst_int_kbd).stl(
             `display:table-row;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:10px;width:90%`
           );

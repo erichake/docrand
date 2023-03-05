@@ -109,5 +109,8 @@ export const $PREFS = {
   footer: {
     height: 140,
     background: "#3a92c8",
+    comment1: "Entrer une expression complètement développée et réduite :",
+    comment2:
+      "Réponse sous forme d'une liste de nombres entiers séparés par des points-virgules :",
   },
 };

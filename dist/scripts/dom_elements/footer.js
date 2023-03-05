@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License along with Doc
 **************************************/
 import { $ } from "../dom_design.js";
 import { div } from "./div.js";
+import { $PREFS } from "../preferences.js";
 export class footer extends div {
     constructor(_cb_getKBD) {
         super();
@@ -81,19 +82,22 @@ export class footer extends div {
             let suf = $.div()
                 .inner($.TeX(s))
                 .stl("display:table-cell;vertical-align:middle");
-            let inp, inp1, inp2, inp3, inp1wrp, inp2wrp, ten, h, min, sec, sep, div, c1, c2, c3;
+            let inp, com, inp1, inp2, inp3, inp1wrp, inp2wrp, ten, h, min, sec, sep, div, c1, c2, c3;
             switch (foot[rank]) {
                 case "expand":
-                    inp = INP(expand_kbd())
-                        .att(`pattern:[\w\d]+`)
-                        .stl(`display:table-cell;margin-left:5px;margin-right:5px;width:300px`);
+                    com = $.div()
+                        .stl(`text-align:center;font-size:14px;font-style:italic;vertical-align:middle;width:100%`)
+                        .inner($PREFS.footer.comment1);
+                    const ln2 = $.div().stl(`display:table;vertical-align:middle;margin-top:10px;width:100%`);
+                    inp = INP(expand_kbd()).stl(`display:table-cell;margin-left:5px;margin-right:5px;width:300px`);
+                    ln2.add(pre).add(inp).add(suf);
                     o.addinput(inp);
-                    wrp.add(pre).add(inp).add(suf);
+                    wrp.add(com).add(ln2);
                     break;
                 case "lst_int":
-                    let com = $.div()
-                        .stl(`display:table-row;font-size:14px;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:3px;width:90%`)
-                        .inner(`Réponse sous forme d'une liste de nombres entiers séparés par des points-virgules :`);
+                    com = $.div()
+                        .stl(`display:table-row;font-size:14px;font-style:italic;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:3px;width:90%`)
+                        .inner($PREFS.footer.comment2);
                     inp = INP(lst_int_kbd).stl(`display:table-row;vertical-align:middle;margin-left:5px;margin-right:5px;margin-top:10px;width:90%`);
                     o.addinput(inp);
                     wrp.stl(`width:100%;text-align:center`).add(com).add(inp);
