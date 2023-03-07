@@ -43,6 +43,7 @@ export class LClass {
         this.footer = () => o.footer();
         this.check = o.check;
         this.tex_answer = o.tex_answer;
+        this.customKeys = () => o.customKeys();
     }
     type() {
         return "int";
@@ -142,7 +143,8 @@ export class LClass {
                 }
                 if (!ok) {
                     this.answer = function () {
-                        return [P.expand()];
+                        let rep = P.expand();
+                        return [rep === "" ? "0" : rep];
                     };
                 }
                 break;

@@ -44,6 +44,7 @@ export class LClass {
     this.answer = () => o.answer();
     this.comment = () => o.comment();
     this.footer = () => o.footer();
+    this.customKeys = () => o.customKeys();
     this.check = o.check;
     this.tex_answer = o.tex_answer;
   }
@@ -113,6 +114,7 @@ export class LClass {
         const OK = function (): boolean {
           let vs = me.vars();
           let v = vs.length === 0 ? "" : vs[0];
+
           try {
             const f = new Function(
               `${v}`,
@@ -136,19 +138,20 @@ export class LClass {
             ok = false;
             $("#COM_FAIL").parent().stl("text-align:center");
             $("#COM_FAIL")
-            .inner($PREFS.content.you_fail.comment2)
+              .inner($PREFS.content.you_fail.comment2)
               .stl("color:green;font-weight:bold;font-style:italic");
           } else if (Math.abs(P.expand().length - ST.length) > 1) {
             ok = false;
             $("#COM_FAIL").parent().stl("text-align:center");
             $("#COM_FAIL")
-            .inner($PREFS.content.you_fail.comment3)
+              .inner($PREFS.content.you_fail.comment3)
               .stl("color:green;font-weight:bold;font-style:italic");
           }
         }
         if (!ok) {
           this.answer = function (): any[] {
-            return [P.expand()];
+            let rep = P.expand();
+            return [rep === "" ? "0" : rep];
           };
         }
 
