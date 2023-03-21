@@ -140,7 +140,7 @@ export class LClass {
             $("#COM_FAIL")
               .inner($PREFS.content.you_fail.comment2)
               .stl("color:green;font-weight:bold;font-style:italic");
-          } else if (Math.abs(P.expand().length - ST.length) > 1) {
+          } else if (ST.length - P.expand().length > 1) {
             ok = false;
             $("#COM_FAIL").parent().stl("text-align:center");
             $("#COM_FAIL")
