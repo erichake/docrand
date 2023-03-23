@@ -63,7 +63,10 @@ if (($u)) {
             // NEXTCLOUD DRIVE :
             $f = (file_get_contents($u . "/download"));
         }
+
+        // Deprecated php 8.2 :
         $f = mb_convert_encoding($f, 'HTML-ENTITIES', "UTF-8");
+        
         $f = preg_replace('/import\s*{[^}]*}[^;]*[;]*/m', '', $f);
 
         echo '<script>window.$PLUGIN=window.atob("' . base64_encode($f) . '");</script>';
