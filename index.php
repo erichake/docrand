@@ -44,8 +44,13 @@ if (($u)) {
             preg_match($pattern, $u, $res);
             if ((is_array($res)) && (count($res) > 0)) {
                 $id = $res[0];
-                $f = file_get_contents("https://drive.google.com/uc?id=" . $id . "&export=download");
+                // Appel de script dans mon GDrive secondaire.
+                // Ramène le contenu du fichier js (un lien de 
+                // download direct ne peut fonctionner chez google 
+                // pour les fichiers d'extension ".js") :
+                $f = file_get_contents("https://script.google.com/macros/s/AKfycbxtuIZlalFpx5mjQHpjzK_AfC52apfIVeRQNTO1XR95K9vX3Em3o6yFcbwCbfs4XvKv/exec?id=" . $id);
             }
+            
         } else if ((strpos($u, 'dropbox.com') !== false)) {
             // DROPBOX :
             $DURL = explode("?", $u);
