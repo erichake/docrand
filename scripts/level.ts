@@ -191,7 +191,7 @@ export class LClass {
         let b = parseFloat(t[1].trim().replace(",", "."));
         let c = this.answer()[0];
         let d = this.answer()[1];
-        ok = eq(a * d, b * c);
+        ok = b !== 0 && eq(a * d, b * c);
         break;
     }
     return ok;
