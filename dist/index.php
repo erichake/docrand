@@ -53,8 +53,11 @@ if (($u)) {
             
         } else if ((strpos($u, 'dropbox.com') !== false)) {
             // DROPBOX :
-            $DURL = explode("?", $u);
-            $f = (file_get_contents($DURL[0] . "?dl=1"));
+            $DURL = explode("?url=", $_SERVER['REQUEST_URI']);
+            $URL = preg_replace('/&dl=0/m', '&dl=1', $DURL[1]);
+            $URL = preg_replace('/\?dl=0/m', '?dl=1', $URL);
+            $f = (file_get_contents($URL));
+            
         } else if (($u) && ((strpos($u, 'drv.ms/') !== false) || (strpos($u, 'live.com/') !== false))) {
             // ONEDRIVE :
             $b64 = base64_encode($u);

@@ -31,7 +31,7 @@ export class footer extends div {
           `id:input_html_element;type:text;pattern:[0-9]*;inputmode:decimal;onclick:this.setSelectionRange(0, this.value.length);autocomplete:off;autocomplete:off;autocapitalize:off`
         )
         .stl(
-          `background:#b8def6;font-size:28px;width:100px;margin-left:5px;margin-right:5px;border-radius:8px;border:0;text-align:center;outline:none;padding-left:10px;padding-right:10px`
+          `background:#b8def6;font-size:28px;width:${o.input_width()}px;margin-left:5px;margin-right:5px;border-radius:8px;border:0;text-align:center;outline:none;padding-left:10px;padding-right:10px`
         );
       inp.getValue().KBDS = kbd;
       return inp;

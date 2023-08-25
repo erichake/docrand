@@ -24,7 +24,7 @@ const RepTypes = [
   "h-min",
   "min-s",
 ] as const;
-export type RepType = typeof RepTypes[number];
+export type RepType = (typeof RepTypes)[number];
 
 export class LClass {
   // Liste des inputs :
@@ -47,6 +47,9 @@ export class LClass {
     this.customKeys = () => o.customKeys();
     this.check = o.check;
     this.tex_answer = o.tex_answer;
+  }
+  input_width() {
+    return 100;
   }
   type(): RepType {
     return "int";
@@ -97,14 +100,21 @@ export class LClass {
   footer(): string[] {
     return [this.prefix(), this.type(), this.suffix()];
   }
+  getInputs(): string[] {
+    let t: string[] = this.inputs.map(
+      (x: any) => (<HTMLInputElement>x.dom()).value
+    );
+    return t;
+  }
   check(): boolean {
     let me = this;
     let eq = function (m: number, n: number): boolean {
       return Math.abs(m - n) < 1e-8;
     };
-    let t: string[] = this.inputs.map(
-      (x: any) => (<HTMLInputElement>x.dom()).value
-    );
+    let t = this.getInputs();
+    // let t: string[] = this.inputs.map(
+    //   (x: any) => (<HTMLInputElement>x.dom()).value
+    // );
     let ok: boolean;
     let stud, teach;
     switch (this.type()) {
